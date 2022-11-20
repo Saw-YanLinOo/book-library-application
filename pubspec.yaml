@@ -38,6 +38,7 @@ dependencies:
   cached_network_image: ^3.2.1
   font_awesome_flutter: ^10.2.1
   flutter_swiper_view: ^1.1.8
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:

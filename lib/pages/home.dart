@@ -4,6 +4,7 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/dummy_data/data.dart';
+import 'package:library_app/pages/book_detail.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/resourses/strings.dart';
 import 'package:lottie/lottie.dart';
@@ -239,7 +240,13 @@ class TitleAndBookListView extends StatelessWidget {
               var book = mBookList?[index];
               return BookViewItem(
                 book: book,
-                onTapSeeMore: () {},
+                onTapSeeMore: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookDetailPage(mBook: book),
+                      ));
+                },
               );
             },
           ),
@@ -285,7 +292,9 @@ class BookViewItem extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    onTapSeeMore();
+                  },
                   child: const Icon(
                     FontAwesomeIcons.ellipsis,
                     color: Colors.white,
