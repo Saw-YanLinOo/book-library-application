@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/kyawkyaw/fvm/versions/3.0.0"
-export "FLUTTER_APPLICATION_PATH=/Users/kyawkyaw/Projects/Flutter Projects/padc/library_app"
+export "FLUTTER_ROOT=C:\Users\Admin\fvm\default"
+export "FLUTTER_APPLICATION_PATH=C:\Users\Admin\Desktop\padc\book-library-application"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
