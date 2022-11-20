@@ -200,12 +200,13 @@ class _LibraryPageState extends State<LibraryPage>
                               ),
                               Divider(),
                               ListView.builder(
+                                shrinkWrap: true,
                                 itemCount: SortBy.values.length,
                                 itemBuilder: (context, index) {
                                   var viewAs = SortBy.values[index];
 
                                   return RadioListTile(
-                                    value: groupValue == index,
+                                    value: index,
                                     groupValue: groupValue,
                                     onChanged: (value) {},
                                     title: Text('${viewAs.name}'),
@@ -235,33 +236,40 @@ class _LibraryPageState extends State<LibraryPage>
                   showModalBottomSheet(
                     context: context,
                     builder: (context) {
-                      return Column(
-                        children: [
-                          Text(
-                            'View as',
-                            style: TextStyle(
-                              fontSize: TEXT_REGULAR_2X,
-                              fontWeight: FontWeight.w700,
+                      debugPrint('show group value :: $groupValue');
+                      return StatefulBuilder(builder: (context, setState) {
+                        return Column(
+                          children: [
+                            Text(
+                              'View as',
+                              style: TextStyle(
+                                fontSize: TEXT_REGULAR_2X,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
-                          Divider(),
-                          ListView.builder(
-                            itemCount: ViewAs.values.length,
-                            itemBuilder: (context, index) {
-                              var viewAs = ViewAs.values[index];
+                            Divider(),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: ViewAs.values.length,
+                              itemBuilder: (context, index) {
+                                var viewAs = ViewAs.values[index];
 
-                              return RadioListTile(
-                                value: groupValue == index,
-                                groupValue: groupValue,
-                                onChanged: (value) {
-                                  _onTapViewas(viewAs, index);
-                                },
-                                title: Text('${viewAs.name}'),
-                              );
-                            },
-                          ),
-                        ],
-                      );
+                                return RadioListTile(
+                                  value: index,
+                                  groupValue: groupValue,
+                                  onChanged: (value) {
+                                    _onTapViewas(viewAs, index);
+                                    groupValue = index;
+                                    debugPrint('group value ::: $groupValue');
+                                    setState(() {});
+                                  },
+                                  title: Text('${viewAs.name}'),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      });
                     },
                   );
                 },
@@ -449,7 +457,7 @@ class SmallGridViewSection extends StatelessWidget {
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 1 / 1.6,
+          childAspectRatio: 1 / 2,
           // crossAxisSpacing: 5,
           // mainAxisSpacing: 5,
           // mainAxisExtent: 150,
