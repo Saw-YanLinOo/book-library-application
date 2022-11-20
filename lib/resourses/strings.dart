@@ -3,6 +3,9 @@ const HOME_TEXT = 'Home';
 const LIBRARY_TEXT = 'Library';
 const EBOOKS_TEXT = 'Ebooks';
 const AUDIOBOOK_TEXT = 'Audiobooks';
+const YOUR_BOOK_TEXT = 'Your books';
+const YOUR_SHELVES_TEXT = 'Your shelves';
+
 const FIVE_STAR = '5';
 const FOUR_STAR = '4';
 const THREE_STAR = '3';

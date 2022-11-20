@@ -4,10 +4,68 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/dummy_data/data.dart';
-import 'package:library_app/pages/book_detail.dart';
+import 'package:library_app/pages/book_detail_page.dart';
+import 'package:library_app/pages/library_page.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/resourses/strings.dart';
+import 'package:library_app/widgets/Tab_bar_view_widget.dart';
 import 'package:lottie/lottie.dart';
+
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int currentIndex = 1;
+  static const pages = [
+    HomePage(),
+    LibraryPage(),
+  ];
+
+  _onChanged(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: MARGIN_MEDIUM,
+            vertical: MARGIN_CARD_MEDIUM_2,
+          ),
+          child: HomeTitleView(
+            onTapSummit: (text) {},
+          ),
+        ),
+      ),
+      body: pages[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: _onChanged,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: HOME_TEXT,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books_outlined),
+            label: LIBRARY_TEXT,
+          )
+        ],
+      ),
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,150 +95,111 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: MARGIN_MEDIUM,
-            vertical: MARGIN_CARD_MEDIUM_2,
-          ),
-          child: HomeTitleView(
-            onTapSummit: (text) {},
+    return ListView(
+      children: [
+        SizedBox(
+          height: MARGIN_XXXXL_LARGE,
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 3,
+          child: Swiper(
+            itemCount: bannerList?.length ?? 0,
+            viewportFraction: 0.5,
+            scale: 0.6,
+            loop: false,
+            itemBuilder: (context, index) {
+              var book = bannerList?[index];
+
+              return Container(
+                child: Stack(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: book?.posterPath ?? '',
+                      fit: BoxFit.fill,
+                      errorWidget: (context, _, __) {
+                        return Lottie.asset('assets/book.json');
+                      },
+                    ),
+                    const Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Icon(
+                        FontAwesomeIcons.ellipsis,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: MARGIN_XL_LARGE,
+                          height: MARGIN_XL_LARGE,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius:
+                                BorderRadius.circular(MARGIN_CARD_MEDIUM),
+                          ),
+                          child: Icon(
+                            Icons.headphones_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: MARGIN_XL_LARGE,
+                          height: MARGIN_XL_LARGE,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius:
+                                BorderRadius.circular(MARGIN_CARD_MEDIUM),
+                          ),
+                          child: const Icon(
+                            Icons.download_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
-      ),
-      body: ListView(
-        children: [
-          SizedBox(
-            height: MARGIN_XXXXL_LARGE,
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 3,
-            child: Swiper(
-              itemCount: bannerList?.length ?? 0,
-              viewportFraction: 0.5,
-              scale: 0.6,
-              loop: false,
-              itemBuilder: (context, index) {
-                var book = bannerList?[index];
-
-                return Container(
-                  child: Stack(
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: book?.posterPath ?? '',
-                        fit: BoxFit.fill,
-                        errorWidget: (context, _, __) {
-                          return Lottie.asset('assets/book.json');
-                        },
-                      ),
-                      const Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Icon(
-                          FontAwesomeIcons.ellipsis,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MARGIN_XL_LARGE,
-                            height: MARGIN_XL_LARGE,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.circular(MARGIN_CARD_MEDIUM),
-                            ),
-                            child: Icon(
-                              Icons.headphones_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MARGIN_XL_LARGE,
-                            height: MARGIN_XL_LARGE,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.circular(MARGIN_CARD_MEDIUM),
-                            ),
-                            child: const Icon(
-                              Icons.download_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(
-            height: MARGIN_LARGE,
-          ),
-          Container(
-            height: MARGIN_XXXXL_LARGE,
-            child: TabBar(
-              onTap: (index) {},
-              controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.label,
-              splashBorderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(5),
-                topRight: Radius.circular(5),
-              ),
-              labelColor: Colors.black,
-              tabs: const [
-                Tab(text: EBOOKS_TEXT),
-                Tab(text: AUDIOBOOK_TEXT),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: MARGIN_CARD_MEDIUM_2,
-          ),
-          TitleAndBookListView(
-            mTitle: "More like Don't Make Me Think, Revist",
-            mBookList: ebookList,
-          ),
-          SizedBox(
-            height: MARGIN_MEDIUM_2,
-          ),
-          TitleAndBookListView(
-            mTitle: "More like Don't Make Me Think, Revist",
-            mBookList: audioBookList,
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: _onChanged,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: HOME_TEXT,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
-            label: LIBRARY_TEXT,
-          )
-        ],
-      ),
+        const SizedBox(
+          height: MARGIN_LARGE,
+        ),
+        TabBarViewWidget(
+          tabController: _tabController,
+          onTap: (index) {},
+          tabItems: const [
+            Tab(text: EBOOKS_TEXT),
+            Tab(text: AUDIOBOOK_TEXT),
+          ],
+        ),
+        SizedBox(
+          height: MARGIN_CARD_MEDIUM_2,
+        ),
+        TitleAndBookListView(
+          mTitle: "More like Don't Make Me Think, Revist",
+          mBookList: ebookList,
+        ),
+        SizedBox(
+          height: MARGIN_MEDIUM_2,
+        ),
+        TitleAndBookListView(
+          mTitle: "More like Don't Make Me Think, Revist",
+          mBookList: audioBookList,
+        ),
+      ],
     );
   }
 }
