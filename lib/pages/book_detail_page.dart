@@ -57,8 +57,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 SizedBox(
                   width: 100,
                   height: 150,
-                  child: CachedNetworkImage(
-                      imageUrl: '${widget.mBook?.posterPath}'),
+                  child:
+                      CachedNetworkImage(imageUrl: '${widget.mBook?.bookUri}'),
                 ),
                 SizedBox(
                   width: MARGIN_CARD_MEDIUM_2,
@@ -67,7 +67,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${widget.mBook?.name}',
+                      '${widget.mBook?.title}',
                       style: TextStyle(
                         fontSize: TEXT_REGULAR_3X,
                       ),
@@ -149,7 +149,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.2,
                     child: Text(
-                      '${widget.mBook?.posterPath}',
+                      '${widget.mBook?.bookUri}',
                       style: TextStyle(
                         fontSize: TEXT_SMALL,
                         color: Colors.grey,
@@ -192,7 +192,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_2),
             child: Text(
-              '${widget.mBook?.posterPath}',
+              '${widget.mBook?.bookUri}',
               style: TextStyle(),
             ),
           ),
@@ -322,7 +322,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         const EdgeInsets.symmetric(vertical: MARGIN_MEDIUM),
                     child: UserCommandItemView(
                       userName: 'User Name',
-                      userProfileImage: widget.mBook?.posterPath,
+                      userProfileImage: widget.mBook?.bookUri,
                       description:
                           'Iv wanted to read this story for years now I was so hyped up that i finally bought it after so long.. Then I read it and was sort of disappointed.. I\'m not saying is wasn\'t good..',
                     ),

@@ -130,7 +130,7 @@ class _LibraryPageState extends State<LibraryPage>
                     return Container(
                       padding:
                           const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM),
-                      child: Chip(label: Text('${book?.type}')),
+                      child: Chip(label: Text('${book?.author}')),
                     );
                   },
                 ),
@@ -159,7 +159,7 @@ class _LibraryPageState extends State<LibraryPage>
                             horizontal: MARGIN_CARD_MEDIUM_2,
                             vertical: MARGIN_MEDIUM,
                           ),
-                          child: Text('${book?.type}'),
+                          child: Text('${book?.author}'),
                         ),
                       );
                     },
@@ -338,7 +338,7 @@ class ListViewSection extends StatelessWidget {
                     width: 90,
                     height: 150,
                     child: CachedNetworkImage(
-                      imageUrl: '${book?.posterPath}',
+                      imageUrl: '${book?.bookUri}',
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -350,7 +350,7 @@ class ListViewSection extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 3,
                         child: Text(
-                          '${book?.name}',
+                          '${book?.title}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TextStyle(

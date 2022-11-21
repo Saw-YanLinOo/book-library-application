@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:library_app/data/model/book_model.dart';
+import 'package:library_app/data/model/book_model_impl.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/dummy_data/data.dart';
 import 'package:library_app/pages/book_detail_page.dart';
@@ -19,6 +21,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  BookModel mbookModel = BookModelImpl();
+
   int currentIndex = 1;
   static const pages = [
     HomePage(),
@@ -29,6 +33,13 @@ class _HomeState extends State<Home> {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    mbookModel.getOverViewJson();
   }
 
   @override
@@ -114,7 +125,7 @@ class _HomePageState extends State<HomePage>
                 child: Stack(
                   children: [
                     CachedNetworkImage(
-                      imageUrl: book?.posterPath ?? '',
+                      imageUrl: book?.bookUri ?? '',
                       fit: BoxFit.fill,
                       errorWidget: (context, _, __) {
                         return Lottie.asset('assets/book.json');
@@ -300,7 +311,7 @@ class BookViewItem extends StatelessWidget {
                 width: 120,
                 height: 150,
                 child: CachedNetworkImage(
-                  imageUrl: book?.posterPath ?? '',
+                  imageUrl: book?.bookUri ?? '',
                   fit: BoxFit.fill,
                   errorWidget: (context, _, __) {
                     return Lottie.asset('assets/book.json');
@@ -345,7 +356,7 @@ class BookViewItem extends StatelessWidget {
             height: 4,
           ),
           Text(
-            '${book?.name}',
+            '${book?.title}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
