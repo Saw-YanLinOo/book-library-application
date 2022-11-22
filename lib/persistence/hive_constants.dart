@@ -4,3 +4,4 @@ const int HIVE_TYPE_ID_LIST_VO = 3;
 const int HIVE_TYPE_ID_OVERVIEW_VO = 4;
 
 const String BOX_NAME_BOOK_VO = 'BOX_NAME_BOOK_VO';
+const String BOX_NAME_OVERVIEW_VO = 'BOX_NAME_OVERVIEW_VO';

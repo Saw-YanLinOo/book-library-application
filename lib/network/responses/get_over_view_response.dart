@@ -16,7 +16,7 @@ class GetOverViewResponse {
   final int? numResults;
 
   @JsonKey(name: 'results')
-  final List<OverViewVO>? results;
+  final OverViewVO? results;
 
   GetOverViewResponse({
     this.status,

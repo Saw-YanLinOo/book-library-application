@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:library_app/data/model/book_model.dart';
 import 'package:library_app/data/vos/book_vo.dart';
+import 'package:library_app/data/vos/list_vo.dart';
 import 'package:library_app/data/vos/over_view_vo.dart';
 import 'package:library_app/network/dataagents/book_data_agent.dart';
 import 'package:library_app/network/dataagents/retrofit_data_agent.dart';
@@ -32,10 +33,17 @@ class BookModelImpl implements BookModel {
 
       mBookDao.saveAllBook(bookList);
     });
+
+    
   }
 
   @override
   Future<List<OverViewVO>?> getOverViewJsonFromDatabase() {
+    List<ListVO> list = [];
+
+    mBookDao.getAllBook().forEach((element) {
+      
+    });
     return mDataAgent.getOverViewJson();
   }
 }
