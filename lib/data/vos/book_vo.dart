@@ -109,7 +109,10 @@ class BookVO {
   final List<BuyLinkVO>? buyLinks;
 
   @HiveField(24)
-  final DateTime? openDate;
+  DateTime? openDate;
+
+  @HiveField(25)
+  String? listName;
 
   BookVO({
     this.ageGroup,
@@ -138,9 +141,9 @@ class BookVO {
     this.weeksOnList,
     this.openDate,
     this.buyLinks,
+    this.listName,
   });
 
-  factory BookVO.fromJson(Map<String,dynamic> json) => _$BookVOFromJson(json);
-  Map<String,dynamic> toJson()=> _$BookVOToJson(this);
-  
+  factory BookVO.fromJson(Map<String, dynamic> json) => _$BookVOFromJson(json);
+  Map<String, dynamic> toJson() => _$BookVOToJson(this);
 }
