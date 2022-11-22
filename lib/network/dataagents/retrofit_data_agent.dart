@@ -25,9 +25,9 @@ class RetrofitBookDataAgent implements BookDataAgent {
   factory RetrofitBookDataAgent() => _singleton;
 
   @override
-  Future<OverViewVO> getOverViewJson() {
+  Future<OverViewVO?> getOverViewJson(String date) {
     return mApi
-        .getOverViewJson(API_KEY)
+        .getOverViewJson(API_KEY,date)
         .asStream()
         .map((event) => event.results)
         .first;

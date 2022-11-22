@@ -21,9 +21,15 @@ class _BookApi implements BookApi {
   String? baseUrl;
 
   @override
-  Future<GetOverViewResponse> getOverViewJson(apiKey) async {
+  Future<GetOverViewResponse> getOverViewJson(
+    apiKey,
+    date,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'api-key': apiKey};
+    final queryParameters = <String, dynamic>{
+      r'api-key': apiKey,
+      r'published_date': date,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

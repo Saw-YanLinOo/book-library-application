@@ -101,17 +101,17 @@ class BookVO {
   final DateTime? updatedDate;
 
   @JsonKey(name: 'weeks_on_list')
-  @HiveField(22)
+  @HiveField(23)
   final int? weeksOnList;
 
   @JsonKey(name: 'buy_links')
-  @HiveField(23)
+  @HiveField(24)
   final List<BuyLinkVO>? buyLinks;
 
-  @HiveField(24)
+  @HiveField(25)
   DateTime? openDate;
 
-  @HiveField(25)
+  @HiveField(26)
   String? listName;
 
   BookVO({

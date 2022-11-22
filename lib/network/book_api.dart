@@ -12,7 +12,6 @@ abstract class BookApi {
   @GET(ENDPOINT_GET_OVER_VIEW_JSON)
   Future<GetOverViewResponse> getOverViewJson(
     @Query(PARAM_API_KEY) String apiKey,
+    @Query(PARAM_PUBLISHED_DATE) String date,
   );
-
-  
 }
