@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:library_app/blocs/home_bloc.dart';
 import 'package:library_app/data/model/book_model.dart';
 import 'package:library_app/data/model/book_model_impl.dart';
 import 'package:library_app/data/vos/book_vo.dart';
@@ -13,6 +14,7 @@ import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/resourses/strings.dart';
 import 'package:library_app/widgets/Tab_bar_view_widget.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -22,58 +24,51 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  BookModel mbookModel = BookModelImpl();
-
-  int currentIndex = 1;
-  static const pages = [
-    HomePage(),
-    LibraryPage(),
-  ];
-
-  _onChanged(int index) {
-    setState(() {
-      currentIndex = index;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    mbookModel.getOverViewJson(DateTime.now().toIso8601String());
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: MARGIN_MEDIUM,
-            vertical: MARGIN_CARD_MEDIUM_2,
-          ),
-          child: HomeTitleView(
-            onTapSummit: (text) {},
+    return ChangeNotifierProvider<HomeBloc>(
+      create: (context) => HomeBloc(),
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: MARGIN_MEDIUM,
+              vertical: MARGIN_CARD_MEDIUM_2,
+            ),
+            child: HomeTitleView(
+              onTapSummit: (text) {},
+            ),
           ),
         ),
-      ),
-      body: pages[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: _onChanged,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: HOME_TEXT,
+        // body: pages[currentIndex],
+        body: Selector<HomeBloc, int>(
+          selector: (context, bloc) => bloc.currentIndex,
+          builder: (context, value, child) =>
+              value == 0 ? const HomePage() : const LibraryPage(),
+        ),
+        bottomNavigationBar: Selector<HomeBloc, int>(
+          selector: (context, bloc) => bloc.currentIndex,
+          builder: (context, value, child) => BottomNavigationBar(
+            currentIndex: value,
+            onTap: (value) {
+              HomeBloc bloc = Provider.of<HomeBloc>(context, listen: false);
+              bloc.onChanged(value);
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled),
+                label: HOME_TEXT,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.library_books_outlined),
+                label: LIBRARY_TEXT,
+              )
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
-            label: LIBRARY_TEXT,
-          )
-        ],
+        ),
       ),
     );
   }

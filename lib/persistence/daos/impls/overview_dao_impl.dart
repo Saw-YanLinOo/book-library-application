@@ -5,8 +5,8 @@ import 'package:library_app/persistence/hive_constants.dart';
 
 class OverViewDaoImpl extends OverViewDao {
   @override
-  OverViewVO getOverView(String date) {
-    return getOverViewBox().values.first;
+  OverViewVO? getOverView(String date) {
+    return getOverViewBox().get(date);
   }
 
   @override

@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:library_app/blocs/home_page_bloc.dart';
-import 'package:library_app/data/model/book_model.dart';
-import 'package:library_app/data/model/book_model_impl.dart';
 import 'package:library_app/data/vos/book_vo.dart';
+import 'package:library_app/data/vos/list_vo.dart';
 import 'package:library_app/dummy_data/data.dart';
 import 'package:library_app/pages/book_detail_page.dart';
-import 'package:library_app/pages/library_page.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/resourses/strings.dart';
 import 'package:library_app/widgets/Tab_bar_view_widget.dart';
@@ -44,10 +42,10 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HomePageBloc>(
-      create: (_) => HomePageBloc(),
+      create: (context) => HomePageBloc(),
       child: ListView(
         children: [
-          SizedBox(
+          const SizedBox(
             height: MARGIN_XXXXL_LARGE,
           ),
           SizedBox(
@@ -91,7 +89,7 @@ class _HomePageState extends State<HomePage>
                               borderRadius:
                                   BorderRadius.circular(MARGIN_CARD_MEDIUM),
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.headphones_outlined,
                               color: Colors.white,
                             ),
@@ -135,19 +133,25 @@ class _HomePageState extends State<HomePage>
               Tab(text: AUDIOBOOK_TEXT),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: MARGIN_CARD_MEDIUM_2,
           ),
-          TitleAndBookListView(
-            mTitle: "More like Don't Make Me Think, Revist",
-            mBookList: ebookList,
-          ),
-          SizedBox(
-            height: MARGIN_MEDIUM_2,
-          ),
-          TitleAndBookListView(
-            mTitle: "More like Don't Make Me Think, Revist",
-            mBookList: audioBookList,
+          Selector<HomePageBloc, List<ListVO>?>(
+            selector: (_, bloc) => bloc.overviewlist,
+            builder: (context, lists, child) {
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: lists?.length,
+                itemBuilder: (context, index) {
+                  var list = lists?[index];
+                  return TitleAndBookListView(
+                    mTitle: '${list?.listName}',
+                    mBookList: list?.books?.take(10).toList(),
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
@@ -166,62 +170,65 @@ class TitleAndBookListView extends StatelessWidget {
   final List<BookVO>? mBookList;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: MARGIN_CARD_MEDIUM_2,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                child: Text(
-                  mTitle ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X,
-                    fontWeight: FontWeight.w500,
+    return SizedBox(
+      // height: HOME_PAGE_LIST_HEIGHT,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: MARGIN_CARD_MEDIUM_2,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: Text(
+                    mTitle ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: TEXT_REGULAR_2X,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: MARGIN_CARD_MEDIUM,
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-              ),
-            ],
+                SizedBox(
+                  width: MARGIN_CARD_MEDIUM,
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: MARGIN_MEDIUM,
-        ),
-        SizedBox(
-          height: 200,
-          child: ListView.builder(
-            reverse: true,
-            itemCount: mBookList?.length,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(left: MARGIN_CARD_MEDIUM),
-            itemBuilder: (context, index) {
-              var book = mBookList?[index];
-              return BookViewItem(
-                book: book,
-                onTapSeeMore: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookDetailPage(mBook: book),
-                      ));
-                },
-              );
-            },
+          SizedBox(
+            height: MARGIN_MEDIUM,
           ),
-        ),
-      ],
+          SizedBox(
+            height: 200,
+            child: ListView.builder(
+              reverse: true,
+              itemCount: mBookList?.length,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: MARGIN_CARD_MEDIUM),
+              itemBuilder: (context, index) {
+                var book = mBookList?[index];
+                return BookViewItem(
+                  book: book,
+                  onTapSeeMore: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookDetailPage(mBook: book),
+                        ));
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

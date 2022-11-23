@@ -296,6 +296,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/kyawkyaw/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "io",
       "rootUri": "file:///Users/kyawkyaw/.pub-cache/hosted/pub.dartlang.org/io-1.0.3",
       "packageUri": "lib/",
@@ -656,7 +662,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-11-22T10:46:01.825025Z",
+  "generated": "2022-11-22T12:44:45.562063Z",
   "generator": "pub",
   "generatorVersion": "2.17.0"
 }

@@ -15,7 +15,7 @@ class RetrofitBookDataAgent implements BookDataAgent {
         requestHeader: true,
         requestBody: true,
         responseHeader: false,
-        responseBody: true,
+        responseBody: false,
       ),
     );
     mApi = BookApi(dio);
@@ -27,7 +27,7 @@ class RetrofitBookDataAgent implements BookDataAgent {
   @override
   Future<OverViewVO?> getOverViewJson(String date) {
     return mApi
-        .getOverViewJson(API_KEY,date)
+        .getOverViewJson(API_KEY, date)
         .asStream()
         .map((event) => event.results)
         .first;
