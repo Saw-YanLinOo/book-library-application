@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import 'package:library_app/data/vos/buy_link_vo.dart';
 import 'package:library_app/persistence/hive_constants.dart';
 
@@ -146,4 +148,9 @@ class BookVO {
 
   factory BookVO.fromJson(Map<String, dynamic> json) => _$BookVOFromJson(json);
   Map<String, dynamic> toJson() => _$BookVOToJson(this);
+
+  @override
+  String toString() {
+    return 'BookVO(ageGroup: $ageGroup, amazonProductUrl: $amazonProductUrl, articleChapterLink: $articleChapterLink, author: $author, bookImage: $bookImage, bookImageWidth: $bookImageWidth, bookImageHeight: $bookImageHeight, bookReviewLink: $bookReviewLink, contributor: $contributor, contributorNote: $contributorNote, createdDate: $createdDate, description: $description, firstChapterLink: $firstChapterLink, price: $price, primaryIsbn10: $primaryIsbn10, primaryIsbn13: $primaryIsbn13, bookUri: $bookUri, publisher: $publisher, rank: $rank, rankLastWeek: $rankLastWeek, sundayReviewLink: $sundayReviewLink, title: $title, updatedDate: $updatedDate, weeksOnList: $weeksOnList, buyLinks: $buyLinks, openDate: $openDate, listName: $listName)';
+  }
 }

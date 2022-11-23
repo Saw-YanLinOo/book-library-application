@@ -12,6 +12,7 @@ class HomePageBloc extends ChangeNotifier {
 
   HomePageBloc() {
     _bookModel.getOverViewJsonFromDatabase(date).listen((event) {
+      debugPrint("get from database :::: $event");
       overviewlist = event?.lists;
       notifyListeners();
     });

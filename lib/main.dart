@@ -5,7 +5,7 @@ import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/buy_link_vo.dart';
 import 'package:library_app/data/vos/list_vo.dart';
 import 'package:library_app/data/vos/over_view_vo.dart';
-import 'package:library_app/pages/home_name.dart';
+import 'package:library_app/pages/home.dart';
 import 'package:library_app/persistence/hive_constants.dart';
 
 void main() async {

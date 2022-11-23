@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage>
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: lists?.length,
+                itemCount: 5,
                 itemBuilder: (context, index) {
                   var list = lists?[index];
                   return TitleAndBookListView(

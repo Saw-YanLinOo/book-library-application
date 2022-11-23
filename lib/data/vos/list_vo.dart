@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/persistence/hive_constants.dart';
 
@@ -50,4 +51,9 @@ class ListVO {
 
   factory ListVO.fromJson(Map<String, dynamic> json) => _$ListVOFromJson(json);
   Map<String, dynamic> toJson() => _$ListVOToJson(this);
+
+  @override
+  String toString() {
+    return 'ListVO(listId: $listId, listName: $listName, listNameEncoded: $listNameEncoded, displayName: $displayName, updated: $updated, listImage: $listImage, listImageWidth: $listImageWidth, listImageHeight: $listImageHeight, books: $books)';
+  }
 }
