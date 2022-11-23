@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/resourses/strings.dart';
+import 'package:lottie/lottie.dart';
 
 class BookDetailPage extends StatefulWidget {
   const BookDetailPage({
@@ -57,8 +58,12 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 SizedBox(
                   width: 100,
                   height: 150,
-                  child:
-                      CachedNetworkImage(imageUrl: '${widget.mBook?.bookUri}'),
+                  child: CachedNetworkImage(
+                    imageUrl: '${widget.mBook?.bookImage}',
+                    errorWidget: (context, _, __) {
+                      return Lottie.asset('assets/book.json');
+                    },
+                  ),
                 ),
                 SizedBox(
                   width: MARGIN_CARD_MEDIUM_2,
@@ -66,10 +71,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${widget.mBook?.title}',
-                      style: TextStyle(
-                        fontSize: TEXT_REGULAR_3X,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Text(
+                        '${widget.mBook?.title}',
+                        style: TextStyle(
+                          fontSize: TEXT_REGULAR_3X,
+                        ),
                       ),
                     ),
                     Text(
@@ -149,7 +157,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 1.2,
                     child: Text(
-                      '${widget.mBook?.bookUri}',
+                      '${widget.mBook?.amazonProductUrl}',
                       style: TextStyle(
                         fontSize: TEXT_SMALL,
                         color: Colors.grey,
@@ -192,7 +200,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_2),
             child: Text(
-              '${widget.mBook?.bookUri}',
+              '${widget.mBook?.description}',
               style: TextStyle(),
             ),
           ),
@@ -321,8 +329,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     padding:
                         const EdgeInsets.symmetric(vertical: MARGIN_MEDIUM),
                     child: UserCommandItemView(
-                      userName: 'User Name',
-                      userProfileImage: widget.mBook?.bookUri,
+                      userName: widget.mBook?.contributor,
+                      userProfileImage: widget.mBook?.bookImage,
                       description:
                           'Iv wanted to read this story for years now I was so hyped up that i finally bought it after so long.. Then I read it and was sort of disappointed.. I\'m not saying is wasn\'t good..',
                     ),

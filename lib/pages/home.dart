@@ -26,48 +26,45 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HomeBloc>(
-      create: (context) => HomeBloc(),
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          title: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: MARGIN_MEDIUM,
-              vertical: MARGIN_CARD_MEDIUM_2,
-            ),
-            child: HomeTitleView(
-              onTapSummit: (text) {},
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: MARGIN_MEDIUM,
+            vertical: MARGIN_CARD_MEDIUM_2,
+          ),
+          child: HomeTitleView(
+            onTapSummit: (text) {},
           ),
         ),
-        // body: pages[currentIndex],
-        body: Selector<HomeBloc, int>(
-          selector: (context, bloc) => bloc.currentIndex,
-          builder: (context, value, child) =>
-              value == 0 ? const HomePage() : const LibraryPage(),
-        ),
-        bottomNavigationBar: Selector<HomeBloc, int>(
-          selector: (context, bloc) => bloc.currentIndex,
-          builder: (context, value, child) => BottomNavigationBar(
-            currentIndex: value,
-            onTap: (value) {
-              HomeBloc bloc = Provider.of<HomeBloc>(context, listen: false);
-              bloc.onChanged(value);
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled),
-                label: HOME_TEXT,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.library_books_outlined),
-                label: LIBRARY_TEXT,
-              )
-            ],
-          ),
+      ),
+      // body: pages[currentIndex],
+      body: Selector<HomeBloc, int>(
+        selector: (context, bloc) => bloc.currentIndex,
+        builder: (context, value, child) =>
+            value == 0 ? const HomePage() : const LibraryPage(),
+      ),
+      bottomNavigationBar: Selector<HomeBloc, int>(
+        selector: (context, bloc) => bloc.currentIndex,
+        builder: (context, value, child) => BottomNavigationBar(
+          currentIndex: value,
+          onTap: (value) {
+            HomeBloc bloc = Provider.of<HomeBloc>(context, listen: false);
+            bloc.onChanged(value);
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: HOME_TEXT,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.library_books_outlined),
+              label: LIBRARY_TEXT,
+            )
+          ],
         ),
       ),
     );
