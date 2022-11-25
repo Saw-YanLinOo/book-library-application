@@ -1,16 +1,10 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:library_app/data/vos/book_vo.dart';
-import 'package:library_app/dummy_data/data.dart';
-import 'package:library_app/pages/home.dart';
-import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/resourses/dimens.dart';
-import 'package:library_app/resourses/strings.dart';
 import 'package:library_app/viewitems/book_view_item.dart';
-import 'package:library_app/widgets/Tab_bar_view_widget.dart';
+import 'package:library_app/viewitems/large_book_view_item.dart';
 
 enum ViewAs {
   List,
@@ -25,7 +19,20 @@ enum SortBy {
 }
 
 class CustomShowBookView extends StatefulWidget {
-  const CustomShowBookView({Key? key}) : super(key: key);
+  const CustomShowBookView({
+    Key? key,
+    this.booklist,
+    this.filterlist,
+    required this.onFilterCategory,
+    required this.onRemoveFilter,
+    required this.onSortByFilter,
+  }) : super(key: key);
+
+  final List<BookVO>? booklist;
+  final List<String>? filterlist;
+  final Function(List<String>?) onFilterCategory;
+  final Function(SortBy sortBy) onSortByFilter;
+  final Function onRemoveFilter;
 
   @override
   State<CustomShowBookView> createState() => _CustomShowBookViewState();
@@ -33,10 +40,9 @@ class CustomShowBookView extends StatefulWidget {
 
 class _CustomShowBookViewState extends State<CustomShowBookView>
     with SingleTickerProviderStateMixin {
-  List<BookVO>? selectedList;
-  List<BookVO>? unSelectedList;
+  List<String>? selectedList = [];
+  List<String>? unSelectedList = [];
   ViewAs viewAs = ViewAs.List;
-  List<BookVO>? bookList = [...ebookList, ...audioBookList];
   int groupValue = 0;
 
   @override
@@ -44,29 +50,35 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
     // TODO: implement initState
     super.initState();
 
-    unSelectedList = [...ebookList, ...audioBookList];
+    // unSelectedList = widget.filterlist;
+    unSelectedList = List.from(widget.filterlist ?? []);
   }
 
-  onTapCategory(BookVO? bookVO) {
+  onTapCategory(String? value) {
     selectedList ??= [];
-    selectedList?.add(bookVO ?? BookVO());
-    unSelectedList?.remove(bookVO);
+    selectedList?.add(value ?? '');
+    unSelectedList?.remove(value);
 
-    setState(() {});
+    widget.onFilterCategory(selectedList);
   }
 
   onRemoveCatgory() {
     selectedList = null;
-    unSelectedList = [...ebookList, ...audioBookList];
-    setState(() {});
-
-    debugPrint('list :: ${unSelectedList}');
+    unSelectedList = List.from(widget.filterlist ?? []);
+    widget.onRemoveFilter();
   }
 
   _onTapViewas(ViewAs mViewAs, int index) {
     viewAs = mViewAs;
     groupValue = index;
+    // widget.onViewAsFilter(mViewAs);
     setState(() {});
+  }
+
+  _onChangedSortBy(SortBy sortBy, int index) {
+    groupValue = index;
+    widget.onSortByFilter(sortBy);
+    //ssetState(() {});
   }
 
   @override
@@ -82,6 +94,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM),
+              physics: const BouncingScrollPhysics(),
               children: [
                 Visibility(
                   visible: selectedList?.isNotEmpty ?? false,
@@ -120,7 +133,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                     return Container(
                       padding:
                           const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM),
-                      child: Chip(label: Text('${book?.author}')),
+                      child: Chip(label: Text('${book}')),
                     );
                   },
                 ),
@@ -149,7 +162,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                             horizontal: MARGIN_CARD_MEDIUM_2,
                             vertical: MARGIN_MEDIUM,
                           ),
-                          child: Text('${book?.author}'),
+                          child: Text('${book}'),
                         ),
                       );
                     },
@@ -179,7 +192,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                       showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return StatefulBuilder(builder: (context, setState) {
+                          return StatefulBuilder(builder: (context, setStated) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
@@ -200,16 +213,16 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                                   shrinkWrap: true,
                                   itemCount: SortBy.values.length,
                                   itemBuilder: (context, index) {
-                                    var viewAs = SortBy.values[index];
+                                    var sortBy = SortBy.values[index];
 
                                     return RadioListTile(
                                       value: index,
                                       groupValue: groupValue,
                                       onChanged: (value) {
-                                        groupValue = index;
-                                        setState(() {});
+                                        _onChangedSortBy(sortBy, index);
+                                        setStated(() {});
                                       },
-                                      title: Text('${viewAs.name}'),
+                                      title: Text('${sortBy.name}'),
                                     );
                                   },
                                 ),
@@ -238,7 +251,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                     context: context,
                     builder: (context) {
                       debugPrint('show group value :: $groupValue');
-                      return StatefulBuilder(builder: (context, setState) {
+                      return StatefulBuilder(builder: (context, setStated) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
@@ -267,9 +280,9 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                                   groupValue: groupValue,
                                   onChanged: (value) {
                                     _onTapViewas(viewAs, index);
-                                    groupValue = index;
-                                    debugPrint('group value ::: $groupValue');
-                                    setState(() {});
+                                    // groupValue = index;
+                                    // debugPrint('group value ::: $groupValue');
+                                    setStated(() {});
                                   },
                                   title: Text('${viewAs.name}'),
                                 );
@@ -302,11 +315,11 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
           child: () {
             switch (viewAs) {
               case ViewAs.List:
-                return ListViewSection(bookList: bookList);
+                return ListViewSection(bookList: widget.booklist);
               case ViewAs.LargeGrid:
-                return LargeGridViewSection(bookList: bookList);
+                return LargeGridViewSection(bookList: widget.booklist);
               case ViewAs.SmallGrid:
-                return SmallGridViewSection(bookList: bookList);
+                return SmallGridViewSection(bookList: widget.booklist);
             }
           }(),
         )
@@ -435,7 +448,7 @@ class LargeGridViewSection extends StatelessWidget {
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 1 / 1.2,
+          childAspectRatio: 1 / 1.55,
           // crossAxisSpacing: 5,
           // mainAxisSpacing: 5,
           // mainAxisExtent: 150,
@@ -444,7 +457,7 @@ class LargeGridViewSection extends StatelessWidget {
         itemCount: bookList?.length,
         itemBuilder: (context, index) {
           var book = bookList?[index];
-          return BookViewItem(
+          return LargeBookViewItem(
             book: book,
             onTapSeeMore: () {},
           );
@@ -472,7 +485,7 @@ class SmallGridViewSection extends StatelessWidget {
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 1 / 2,
+          childAspectRatio: 1 / 1.8,
           // crossAxisSpacing: 5,
           // mainAxisSpacing: 5,
           // mainAxisExtent: 150,

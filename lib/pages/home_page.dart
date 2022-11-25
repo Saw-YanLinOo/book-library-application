@@ -24,15 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  List<BookVO>? bannerList = [...audioBookList, ...ebookList];
-  int currentIndex = 0;
   late TabController _tabController;
-
-  _onChanged(int index) {
-    setState(() {
-      currentIndex = index;
-    });
-  }
 
   @override
   void initState() {
@@ -48,80 +40,87 @@ class _HomePageState extends State<HomePage>
         const SizedBox(
           height: MARGIN_XXXXL_LARGE,
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 3,
-          child: Swiper(
-            itemCount: bannerList?.length ?? 0,
-            viewportFraction: 0.5,
-            scale: 0.6,
-            loop: false,
-            itemBuilder: (context, index) {
-              var book = bannerList?[index];
+        Selector<HomePageBloc, List<BookVO>?>(
+            selector: (context, bloc) => bloc.previewbooklist,
+            builder: (context, bookList, child) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 3,
+                child: bookList == null || bookList.isEmpty
+                    ? Lottie.asset('assets/book.json')
+                    : Swiper(
+                        itemCount: bookList.length,
+                        viewportFraction: 0.5,
+                        scale: 0.6,
+                        loop: false,
+                        itemBuilder: (context, index) {
+                          var book = bookList[index];
 
-              return Container(
-                child: Stack(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: book?.bookImage ?? '',
-                      fit: BoxFit.fill,
-                      errorWidget: (context, _, __) {
-                        return Lottie.asset('assets/book.json');
-                      },
-                    ),
-                    const Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Icon(
-                        FontAwesomeIcons.ellipsis,
-                        color: Colors.white,
+                          return Container(
+                            child: Stack(
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: book.bookImage ?? '',
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, _, __) {
+                                    return Lottie.asset('assets/book.json');
+                                  },
+                                ),
+                                const Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Icon(
+                                    FontAwesomeIcons.ellipsis,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      width: MARGIN_XL_LARGE,
+                                      height: MARGIN_XL_LARGE,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.circular(
+                                            MARGIN_CARD_MEDIUM),
+                                      ),
+                                      child: const Icon(
+                                        Icons.headphones_outlined,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 15,
+                                  child: Container(
+                                    padding:
+                                        const EdgeInsets.all(MARGIN_MEDIUM),
+                                    child: Container(
+                                      width: MARGIN_XL_LARGE,
+                                      height: MARGIN_XL_LARGE,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.circular(
+                                            MARGIN_CARD_MEDIUM),
+                                      ),
+                                      child: const Icon(
+                                        Icons.download_rounded,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: MARGIN_XL_LARGE,
-                          height: MARGIN_XL_LARGE,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius:
-                                BorderRadius.circular(MARGIN_CARD_MEDIUM),
-                          ),
-                          child: const Icon(
-                            Icons.headphones_outlined,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: MARGIN_XL_LARGE,
-                          height: MARGIN_XL_LARGE,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius:
-                                BorderRadius.circular(MARGIN_CARD_MEDIUM),
-                          ),
-                          child: const Icon(
-                            Icons.download_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               );
-            },
-          ),
-        ),
+            }),
         const SizedBox(
           height: MARGIN_LARGE,
         ),
@@ -169,7 +168,10 @@ class _HomePageState extends State<HomePage>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BookDetailPage(mBook: book),
+                              builder: (context) => BookDetailPage(
+                                mBook: book,
+                                listName: list.listName,
+                              ),
                             ),
                           );
                         },

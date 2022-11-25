@@ -31,15 +31,17 @@ class BookDaoImpl extends BookDao {
   }
 
   @override
-  List<BookVO> getAllBookByListName(String listName) {
+  List<BookVO> getAllBookByListName(List<String> listName) {
     return getBookBox()
         .values
-        .where((element) => element.listName == listName)
+        //.skipWhile((value) => !listName.contains(value.listName))
+        .where((book) => listName.contains(book.listName))
+        // .where((element) => element.listName == listName)
         .toList();
   }
 
   @override
-  Stream<List<BookVO>> getAllBookByListNameStream(String listName) {
+  Stream<List<BookVO>> getAllBookByListNameStream(List<String> listName) {
     return Stream.value(getAllBookByListName(listName));
   }
 
@@ -56,5 +58,15 @@ class BookDaoImpl extends BookDao {
   @override
   BookVO? getBookDetail(String title) {
     return getBookBox().get(title);
+  }
+
+  @override
+  List<String>? getListName() {
+    return getBookBox().values.map((e) => e.listName ?? '').toList();
+  }
+
+  @override
+  Stream<List<String>?> getListNameStream() {
+    return Stream.value(getListName());
   }
 }

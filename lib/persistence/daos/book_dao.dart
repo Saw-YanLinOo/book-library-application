@@ -4,9 +4,11 @@ abstract class BookDao {
   void saveAllBook(List<BookVO> bookList);
   void saveSingleBook(BookVO book);
   List<BookVO> getAllBook();
-  List<BookVO> getAllBookByListName(String listName);
+  List<String>? getListName();
+  List<BookVO> getAllBookByListName(List<String> listName);
   BookVO? getBookDetail(String title);
   Stream<void> getAllBooksEventStream();
   Stream<List<BookVO>> getAllBookStream();
-  Stream<List<BookVO>> getAllBookByListNameStream(String listName);
+  Stream<List<String>?> getListNameStream();
+  Stream<List<BookVO>> getAllBookByListNameStream(List<String> listName);
 }

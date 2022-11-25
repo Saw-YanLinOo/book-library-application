@@ -4,6 +4,7 @@ import 'package:library_app/pages/home.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/viewitems/book_view_item.dart';
+import 'package:library_app/viewitems/large_book_view_item.dart';
 
 class TitleAndBookPage extends StatefulWidget {
   const TitleAndBookPage({
@@ -44,17 +45,19 @@ class _TitleAndBookPageState extends State<TitleAndBookPage> {
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 1 / 1.2,
+          childAspectRatio: 1 / 1.55,
           // crossAxisSpacing: 5,
           // mainAxisSpacing: 5,
           // mainAxisExtent: 200,
         ),
-        padding: const EdgeInsets.symmetric(vertical: MARGIN_MEDIUM_2),
-        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(
+          vertical: MARGIN_MEDIUM,
+          horizontal: MARGIN_MEDIUM_2,
+        ),
         itemBuilder: (context, index) {
           var book = widget.mBookList?[index];
 
-          return BookViewItem(
+          return LargeBookViewItem(
             book: book,
             onTapSeeMore: () {},
           );
