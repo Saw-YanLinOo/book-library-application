@@ -69,4 +69,9 @@ class BookDaoImpl extends BookDao {
   Stream<List<String>?> getListNameStream() {
     return Stream.value(getListName());
   }
+
+  @override
+  void deleteBook(String title) async {
+    await getBookBox().delete(title);
+  }
 }

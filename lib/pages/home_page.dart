@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:library_app/blocs/add_to_shelf_bloc.dart';
 import 'package:library_app/blocs/home_page_bloc.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/list_vo.dart';
 import 'package:library_app/dummy_data/data.dart';
+import 'package:library_app/pages/add_to_shelf_page.dart';
 import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/pages/title_and_book_page.dart';
 import 'package:library_app/resourses/dimens.dart';
@@ -43,82 +45,8 @@ class _HomePageState extends State<HomePage>
         Selector<HomePageBloc, List<BookVO>?>(
             selector: (context, bloc) => bloc.previewbooklist,
             builder: (context, bookList, child) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 3,
-                child: bookList == null || bookList.isEmpty
-                    ? Lottie.asset('assets/book.json')
-                    : Swiper(
-                        itemCount: bookList.length,
-                        viewportFraction: 0.5,
-                        scale: 0.6,
-                        loop: false,
-                        itemBuilder: (context, index) {
-                          var book = bookList[index];
-
-                          return Container(
-                            child: Stack(
-                              children: [
-                                CachedNetworkImage(
-                                  imageUrl: book.bookImage ?? '',
-                                  fit: BoxFit.fill,
-                                  errorWidget: (context, _, __) {
-                                    return Lottie.asset('assets/book.json');
-                                  },
-                                ),
-                                const Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Icon(
-                                    FontAwesomeIcons.ellipsis,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  left: 0,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: MARGIN_XL_LARGE,
-                                      height: MARGIN_XL_LARGE,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(
-                                            MARGIN_CARD_MEDIUM),
-                                      ),
-                                      child: const Icon(
-                                        Icons.headphones_outlined,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 15,
-                                  child: Container(
-                                    padding:
-                                        const EdgeInsets.all(MARGIN_MEDIUM),
-                                    child: Container(
-                                      width: MARGIN_XL_LARGE,
-                                      height: MARGIN_XL_LARGE,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(
-                                            MARGIN_CARD_MEDIUM),
-                                      ),
-                                      child: const Icon(
-                                        Icons.download_rounded,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+              return BookSwipperSetion(
+                bookList: bookList,
               );
             }),
         const SizedBox(
@@ -164,6 +92,35 @@ class _HomePageState extends State<HomePage>
                             ),
                           );
                         },
+                        onTapSeeMore: (book) {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return ChangeNotifierProvider.value(
+                                    value: HomePageBloc(),
+                                    builder: (context, child) {
+                                      return BookSettingSheetView(
+                                        book: book,
+                                        onTapAddToShelf: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddToShelfPage(
+                                                book: book,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        onTapDelete: () {
+                                          context
+                                              .read<HomePageBloc>()
+                                              .deleteBook(book?.title ?? '');
+                                        },
+                                      );
+                                    });
+                              });
+                        },
                         onTapBook: (book) {
                           Navigator.push(
                             context,
@@ -185,6 +142,205 @@ class _HomePageState extends State<HomePage>
   }
 }
 
+class BookSwipperSetion extends StatelessWidget {
+  const BookSwipperSetion({
+    Key? key,
+    this.bookList,
+  }) : super(key: key);
+
+  final List<BookVO>? bookList;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 3,
+      child: bookList == null || (bookList?.isEmpty ?? true)
+          ? Lottie.asset('assets/book.json')
+          : Swiper(
+              itemCount: bookList?.length ?? 0,
+              viewportFraction: 0.5,
+              scale: 0.6,
+              loop: false,
+              itemBuilder: (context, index) {
+                var book = bookList?[index];
+
+                return Container(
+                  child: Stack(
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: book?.bookImage ?? '',
+                        fit: BoxFit.fill,
+                        errorWidget: (context, _, __) {
+                          return Lottie.asset('assets/book.json');
+                        },
+                      ),
+                      const Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Icon(
+                          FontAwesomeIcons.ellipsis,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: MARGIN_XL_LARGE,
+                            height: MARGIN_XL_LARGE,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius:
+                                  BorderRadius.circular(MARGIN_CARD_MEDIUM),
+                            ),
+                            child: const Icon(
+                              Icons.headphones_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 15,
+                        child: Container(
+                          padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                          child: Container(
+                            width: MARGIN_XL_LARGE,
+                            height: MARGIN_XL_LARGE,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius:
+                                  BorderRadius.circular(MARGIN_CARD_MEDIUM),
+                            ),
+                            child: const Icon(
+                              Icons.download_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+
+class BookSettingSheetView extends StatelessWidget {
+  const BookSettingSheetView({
+    Key? key,
+    this.book,
+    required this.onTapDelete,
+    required this.onTapAddToShelf,
+  }) : super(key: key);
+
+  final BookVO? book;
+  final Function onTapDelete;
+  final Function onTapAddToShelf;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: MARGIN_CARD_MEDIUM,
+            vertical: MARGIN_MEDIUM_2,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 50,
+                height: 80,
+                child: CachedNetworkImage(
+                  imageUrl: '${book?.bookImage}',
+                  fit: BoxFit.fill,
+                ),
+              ),
+              SizedBox(
+                width: MARGIN_MEDIUM,
+              ),
+              Column(
+                children: [
+                  Text(
+                    '${book?.title}',
+                    style: const TextStyle(
+                      fontSize: TEXT_REGULAR,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    '${book?.author}',
+                    style: const TextStyle(
+                      fontSize: TEXT_SMALL,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Divider(),
+        ListTile(
+          onTap: () {
+            //onEdit();
+          },
+          leading: Icon(Icons.file_download_outlined),
+          title: Text(
+            'Download',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            onTapDelete();
+          },
+          leading: Icon(Icons.delete),
+          title: Text(
+            'Delete from your library',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            onTapAddToShelf();
+          },
+          leading: Icon(Icons.add),
+          title: Text(
+            'Add to Shelf',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            //onDelected();
+          },
+          leading: Icon(Icons.done),
+          title: Text(
+            'Make as read',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class TitleAndBookListView extends StatelessWidget {
   const TitleAndBookListView({
     Key? key,
@@ -192,12 +348,15 @@ class TitleAndBookListView extends StatelessWidget {
     this.mBookList,
     required this.onTapForward,
     required this.onTapBook,
+    required this.onTapSeeMore,
   }) : super(key: key);
 
   final String? mTitle;
   final List<BookVO>? mBookList;
   final Function onTapForward;
   final Function(BookVO?) onTapBook;
+  final Function(BookVO?) onTapSeeMore;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -249,10 +408,14 @@ class TitleAndBookListView extends StatelessWidget {
               padding: const EdgeInsets.only(left: MARGIN_CARD_MEDIUM),
               itemBuilder: (context, index) {
                 var book = mBookList?[index];
+                book?.listName = mTitle;
                 return BookViewItem(
                   book: book,
-                  onTapSeeMore: () {
+                  onTapBook: (book) {
                     onTapBook(book);
+                  },
+                  onTapSeeMore: () {
+                    onTapSeeMore(book);
                   },
                 );
               },

@@ -42,9 +42,14 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
           ),
           actions: [
             InkWell(
@@ -116,6 +121,7 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
               child: Selector<SehlfDetailBloc, List<BookVO>?>(
                 selector: (context, bloc) => bloc.booklist,
                 builder: (context, booklist, child) {
+                  debugPrint('shelf book list ::: ${booklist}');
                   return SizedBox(
                     child: booklist == null || (booklist.isEmpty)
                         ? const Center(

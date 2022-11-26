@@ -1,28 +1,33 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:library_app/blocs/add_to_shelf_bloc.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:provider/provider.dart';
 
 class AddToShelfPage extends StatelessWidget {
-  const AddToShelfPage({Key? key}) : super(key: key);
+  const AddToShelfPage({
+    Key? key,
+    this.book,
+  }) : super(key: key);
 
+  final BookVO? book;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AddToShelfBloc>(
       create: (context) => AddToShelfBloc(),
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           centerTitle: true,
+          backgroundColor: Colors.transparent,
           title: Text(
             'Add to Shelves',
             style: TextStyle(
-              fontSize: TEXT_REGULAR_2X,
-              fontWeight: FontWeight.w200,
-            ),
+                fontSize: TEXT_REGULAR_2X,
+                fontWeight: FontWeight.w200,
+                color: Colors.black),
           ),
           actions: [
             InkWell(
@@ -33,7 +38,10 @@ class AddToShelfPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: MARGIN_CARD_MEDIUM,
                 ),
-                child: Icon(Icons.clear),
+                child: Icon(
+                  Icons.clear,
+                  color: Colors.black,
+                ),
               ),
             )
           ],
@@ -41,14 +49,25 @@ class AddToShelfPage extends StatelessWidget {
         body: Selector<AddToShelfBloc, List<ShelfVO>?>(
           selector: (context, bloc) => bloc.shelfList,
           builder: (context, shelfs, child) {
-            return ListView.builder(
-              itemCount: shelfs?.length,
+            return ListView.separated(
+              itemCount: shelfs?.length ?? 0,
               itemBuilder: (context, index) {
                 var shelf = shelfs?[index];
+
                 return ShelfView(
                   shelf: shelf,
-                  onShelfCheck: (value) {},
+                  isCheck: shelf?.bookTiteList?.contains(book?.title),
+                  onShelfCheck: (value) {
+                    context.read<AddToShelfBloc>().bookToShelf(
+                          shelf ?? ShelfVO(),
+                          book ?? BookVO(),
+                          value ?? false,
+                        );
+                  },
                 );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider();
               },
             );
           },
@@ -62,11 +81,13 @@ class ShelfView extends StatelessWidget {
   const ShelfView({
     Key? key,
     this.shelf,
+    this.isCheck,
     required this.onShelfCheck,
   }) : super(key: key);
 
   final ShelfVO? shelf;
   final Function(bool?) onShelfCheck;
+  final bool? isCheck;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -119,7 +140,7 @@ class ShelfView extends StatelessWidget {
           width: MARGIN_MEDIUM,
         ),
         Checkbox(
-          value: true,
+          value: isCheck ?? false,
           onChanged: (value) {
             onShelfCheck(value);
           },

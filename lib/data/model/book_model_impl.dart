@@ -103,4 +103,19 @@ class BookModelImpl implements BookModel {
   void renameShelf(String name, String index) {
     mShelfDao.renameShelf(name, index);
   }
+
+  @override
+  void deleteBook(String title) {
+    mBookDao.deleteBook(title);
+  }
+
+  @override
+  void addBookToShelf(String index, BookVO bookVO) {
+    mShelfDao.addBooToShelf(index, bookVO);
+  }
+
+  @override
+  void removeBookToShelf(String index, BookVO bookVO) {
+    mShelfDao.removeBooToShelf(index, bookVO);
+  }
 }

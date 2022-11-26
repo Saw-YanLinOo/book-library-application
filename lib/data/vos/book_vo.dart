@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -152,5 +153,70 @@ class BookVO {
   @override
   String toString() {
     return 'BookVO(ageGroup: $ageGroup, amazonProductUrl: $amazonProductUrl, articleChapterLink: $articleChapterLink, author: $author, bookImage: $bookImage, bookImageWidth: $bookImageWidth, bookImageHeight: $bookImageHeight, bookReviewLink: $bookReviewLink, contributor: $contributor, contributorNote: $contributorNote, createdDate: $createdDate, description: $description, firstChapterLink: $firstChapterLink, price: $price, primaryIsbn10: $primaryIsbn10, primaryIsbn13: $primaryIsbn13, bookUri: $bookUri, publisher: $publisher, rank: $rank, rankLastWeek: $rankLastWeek, sundayReviewLink: $sundayReviewLink, title: $title, updatedDate: $updatedDate, weeksOnList: $weeksOnList, buyLinks: $buyLinks, openDate: $openDate, listName: $listName)';
+  }
+
+  @override
+  bool operator ==(covariant BookVO other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.ageGroup == ageGroup &&
+      other.amazonProductUrl == amazonProductUrl &&
+      other.articleChapterLink == articleChapterLink &&
+      other.author == author &&
+      other.bookImage == bookImage &&
+      other.bookImageWidth == bookImageWidth &&
+      other.bookImageHeight == bookImageHeight &&
+      other.bookReviewLink == bookReviewLink &&
+      other.contributor == contributor &&
+      other.contributorNote == contributorNote &&
+      other.createdDate == createdDate &&
+      other.description == description &&
+      other.firstChapterLink == firstChapterLink &&
+      other.price == price &&
+      other.primaryIsbn10 == primaryIsbn10 &&
+      other.primaryIsbn13 == primaryIsbn13 &&
+      other.bookUri == bookUri &&
+      other.publisher == publisher &&
+      other.rank == rank &&
+      other.rankLastWeek == rankLastWeek &&
+      other.sundayReviewLink == sundayReviewLink &&
+      other.title == title &&
+      other.updatedDate == updatedDate &&
+      other.weeksOnList == weeksOnList &&
+      listEquals(other.buyLinks, buyLinks) &&
+      other.openDate == openDate &&
+      other.listName == listName;
+  }
+
+  @override
+  int get hashCode {
+    return ageGroup.hashCode ^
+      amazonProductUrl.hashCode ^
+      articleChapterLink.hashCode ^
+      author.hashCode ^
+      bookImage.hashCode ^
+      bookImageWidth.hashCode ^
+      bookImageHeight.hashCode ^
+      bookReviewLink.hashCode ^
+      contributor.hashCode ^
+      contributorNote.hashCode ^
+      createdDate.hashCode ^
+      description.hashCode ^
+      firstChapterLink.hashCode ^
+      price.hashCode ^
+      primaryIsbn10.hashCode ^
+      primaryIsbn13.hashCode ^
+      bookUri.hashCode ^
+      publisher.hashCode ^
+      rank.hashCode ^
+      rankLastWeek.hashCode ^
+      sundayReviewLink.hashCode ^
+      title.hashCode ^
+      updatedDate.hashCode ^
+      weeksOnList.hashCode ^
+      buyLinks.hashCode ^
+      openDate.hashCode ^
+      listName.hashCode;
   }
 }

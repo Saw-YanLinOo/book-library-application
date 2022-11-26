@@ -497,6 +497,7 @@ class SmallGridViewSection extends StatelessWidget {
           return BookViewItem(
             book: book,
             onTapSeeMore: () {},
+            onTapBook: (book){},
           );
         },
       ),

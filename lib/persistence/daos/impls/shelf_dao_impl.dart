@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/persistence/daos/shelf_dao.dart';
 import 'package:library_app/persistence/hive_constants.dart';
@@ -17,9 +19,7 @@ class ShelfDaoImpl extends ShelfDao {
 
   @override
   void saveShelf(ShelfVO shelfVO) async {
-    var index = Uuid().v4();
-    shelfVO.index = index;
-    await getSelfBox().put(index, shelfVO);
+    await getSelfBox().put(shelfVO.index, shelfVO);
   }
 
   @override
@@ -50,6 +50,28 @@ class ShelfDaoImpl extends ShelfDao {
   void renameShelf(String name, String index) {
     var shelf = getShelf(index);
     shelf?.shelfName = name;
+    saveShelf(shelf ?? ShelfVO());
+  }
+
+  @override
+  void addBooToShelf(String index, BookVO bookVO) {
+    var shelf = getShelf(index);
+    shelf?.bookList ??= [];
+    shelf?.bookList?.add(bookVO);
+    shelf?.bookTiteList ??= [];
+    shelf?.bookTiteList?.add(bookVO.title ?? '');
+
+    debugPrint('add book to shelf($index) bookList :: ${shelf?.bookList}');
+    saveShelf(shelf ?? ShelfVO());
+  }
+
+  @override
+  void removeBooToShelf(String index, BookVO bookVO) {
+    var shelf = getShelf(index);
+    shelf?.bookList?.remove(bookVO);
+    shelf?.bookTiteList?.remove(bookVO.title ?? '');
+    debugPrint('remove book to shelf($index) bookList :: ${shelf?.bookList}');
+
     saveShelf(shelf ?? ShelfVO());
   }
 }

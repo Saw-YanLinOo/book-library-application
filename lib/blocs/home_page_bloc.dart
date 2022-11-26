@@ -31,7 +31,11 @@ class HomePageBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-  // saveBook(BookVO book) {
-  //   _bookModel.saveBook(book);
-  // }
+  saveBook(BookVO book) {
+    _bookModel.saveBook(book);
+  }
+
+  deleteBook(String title) {
+    _bookModel.deleteBook(title);
+  }
 }

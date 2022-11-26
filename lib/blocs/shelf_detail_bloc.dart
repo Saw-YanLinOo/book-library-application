@@ -15,7 +15,7 @@ class SehlfDetailBloc extends ChangeNotifier {
   SehlfDetailBloc(ShelfVO shelfVO) {
     bookModel.getShelfFromDatabase(shelfVO.index ?? '').listen((event) {
       shelf = event;
-
+      booklist = event?.bookList;
       notifyListeners();
     });
   }

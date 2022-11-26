@@ -3,6 +3,7 @@ import 'package:library_app/data/vos/book_vo.dart';
 abstract class BookDao {
   void saveAllBook(List<BookVO> bookList);
   void saveSingleBook(BookVO book);
+  void deleteBook(String title);
   List<BookVO> getAllBook();
   List<String>? getListName();
   List<BookVO> getAllBookByListName(List<String> listName);
