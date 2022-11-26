@@ -8,6 +8,8 @@ import 'package:library_app/data/vos/list_vo.dart';
 class HomePageBloc extends ChangeNotifier {
   List<ListVO>? overviewlist;
   List<BookVO>? previewbooklist;
+  int currentIndex = 0;
+  int bookType = 0;
 
   final BookModel _bookModel = BookModelImpl();
   String date = DateFormat('yyy-MM-dd').format(DateTime.now());
@@ -24,10 +26,14 @@ class HomePageBloc extends ChangeNotifier {
       notifyListeners();
     });
   }
-  int currentIndex = 0;
 
   void onChanged(int index) {
     currentIndex = index;
+    notifyListeners();
+  }
+
+  void onChangedBookType(int index) {
+    bookType = index;
     notifyListeners();
   }
 

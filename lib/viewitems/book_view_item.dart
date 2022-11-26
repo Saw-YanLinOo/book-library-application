@@ -9,10 +9,12 @@ class BookViewItem extends StatelessWidget {
   const BookViewItem({
     Key? key,
     this.book,
+    this.audio,
     required this.onTapBook,
     required this.onTapSeeMore,
   }) : super(key: key);
 
+  final bool? audio;
   final BookVO? book;
   final Function(BookVO?) onTapBook;
   final Function onTapSeeMore;
@@ -56,21 +58,24 @@ class BookViewItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: const Icon(
-                        Icons.headphones_outlined,
-                        color: Colors.white,
+                Visibility(
+                  visible: audio ?? false,
+                  child: Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: const Icon(
+                          Icons.headphones_outlined,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

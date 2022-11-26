@@ -9,6 +9,7 @@ import 'package:library_app/data/vos/list_vo.dart';
 import 'package:library_app/dummy_data/data.dart';
 import 'package:library_app/pages/add_to_shelf_page.dart';
 import 'package:library_app/pages/book_detail_page.dart';
+import 'package:library_app/pages/bottomsheet_page/book_setting_shelf_view.dart';
 import 'package:library_app/pages/title_and_book_page.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/resourses/strings.dart';
@@ -52,89 +53,105 @@ class _HomePageState extends State<HomePage>
         const SizedBox(
           height: MARGIN_LARGE,
         ),
-        TabBarViewWidget(
-          tabController: _tabController,
-          onTap: (index) {},
-          tabItems: const [
-            Tab(text: EBOOKS_TEXT),
-            Tab(text: AUDIOBOOK_TEXT),
-          ],
-        ),
+        Selector<HomePageBloc, int>(
+            selector: (context, bloc) => bloc.bookType,
+            builder: (context, value, child) {
+              _tabController.index = value;
+
+              return TabBarViewWidget(
+                tabController: _tabController,
+                onTap: (index) {
+                  context.read<HomePageBloc>().onChangedBookType(index);
+                },
+                tabItems: const [
+                  Tab(text: EBOOKS_TEXT),
+                  Tab(text: AUDIOBOOK_TEXT),
+                ],
+              );
+            }),
         const SizedBox(
           height: MARGIN_CARD_MEDIUM_2,
         ),
-        Selector<HomePageBloc, List<ListVO>?>(
-          selector: (_, bloc) => bloc.overviewlist,
-          builder: (context, lists, child) {
-            debugPrint('list lenget :::::::::::: ${lists?.length}');
+        Selector<HomePageBloc, int>(
+          selector: (context, bloc) => bloc.bookType,
+          builder: (context, value, child) {
+            return Selector<HomePageBloc, List<ListVO>?>(
+              selector: (_, bloc) => bloc.overviewlist,
+              builder: (context, lists, child) {
+                debugPrint('list lenget :::::::::::: ${lists?.length}');
 
-            return lists == null
-                ? const CircularProgressIndicator()
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lists.length,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: MARGIN_CARD_MEDIUM),
-                    itemBuilder: (context, index) {
-                      var list = lists[index];
-                      return TitleAndBookListView(
-                        mTitle: '${list.listName}',
-                        mBookList: list.books,
-                        onTapForward: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TitleAndBookPage(
-                                mBookList: list.books,
-                                mtitle: list.listName,
-                              ),
-                            ),
-                          );
-                        },
-                        onTapSeeMore: (book) {
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return ChangeNotifierProvider.value(
-                                    value: HomePageBloc(),
-                                    builder: (context, child) {
-                                      return BookSettingSheetView(
-                                        book: book,
-                                        onTapAddToShelf: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddToShelfPage(
-                                                book: book,
-                                              ),
-                                            ),
+                return lists == null
+                    ? const CircularProgressIndicator()
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: lists.length,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: MARGIN_CARD_MEDIUM),
+                        itemBuilder: (context, index) {
+                          var list = lists[index];
+                          return TitleAndBookListView(
+                            audio: value == 1,
+                            mTitle: '${list.listName}',
+                            mBookList: list.books,
+                            onTapForward: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TitleAndBookPage(
+                                    mBookList: list.books,
+                                    mtitle: list.listName,
+                                  ),
+                                ),
+                              );
+                            },
+                            onTapSeeMore: (book) {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return ChangeNotifierProvider.value(
+                                        value: HomePageBloc(),
+                                        builder: (context, child) {
+                                          return BookSettingSheetView(
+                                            book: book,
+                                            onTapAboutThisBook: () {},
+                                            onTapAddToShelf: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AddToShelfPage(
+                                                    book: book,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            onTapDelete: () {
+                                              context
+                                                  .read<HomePageBloc>()
+                                                  .deleteBook(
+                                                      book?.title ?? '');
+                                            },
                                           );
-                                        },
-                                        onTapDelete: () {
-                                          context
-                                              .read<HomePageBloc>()
-                                              .deleteBook(book?.title ?? '');
-                                        },
-                                      );
-                                    });
-                              });
-                        },
-                        onTapBook: (book) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookDetailPage(
-                                mBook: book,
-                                listName: list.listName,
-                              ),
-                            ),
+                                        });
+                                  });
+                            },
+                            onTapBook: (book) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetailPage(
+                                    mBook: book,
+                                    listName: list.listName,
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       );
-                    },
-                  );
+              },
+            );
           },
         ),
       ],
@@ -181,26 +198,26 @@ class BookSwipperSetion extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MARGIN_XL_LARGE,
-                            height: MARGIN_XL_LARGE,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.circular(MARGIN_CARD_MEDIUM),
-                            ),
-                            child: const Icon(
-                              Icons.headphones_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: 0,
+                      //   left: 0,
+                      //   child: Container(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Container(
+                      //       width: MARGIN_XL_LARGE,
+                      //       height: MARGIN_XL_LARGE,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.black,
+                      //         borderRadius:
+                      //             BorderRadius.circular(MARGIN_CARD_MEDIUM),
+                      //       ),
+                      //       child: const Icon(
+                      //         Icons.headphones_outlined,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Positioned(
                         bottom: 0,
                         right: 15,
@@ -230,121 +247,122 @@ class BookSwipperSetion extends StatelessWidget {
   }
 }
 
-class BookSettingSheetView extends StatelessWidget {
-  const BookSettingSheetView({
-    Key? key,
-    this.book,
-    required this.onTapDelete,
-    required this.onTapAddToShelf,
-  }) : super(key: key);
+// class BookSettingSheetView extends StatelessWidget {
+//   const BookSettingSheetView({
+//     Key? key,
+//     this.book,
+//     required this.onTapDelete,
+//     required this.onTapAddToShelf,
+//   }) : super(key: key);
 
-  final BookVO? book;
-  final Function onTapDelete;
-  final Function onTapAddToShelf;
+//   final BookVO? book;
+//   final Function onTapDelete;
+//   final Function onTapAddToShelf;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: MARGIN_CARD_MEDIUM,
-            vertical: MARGIN_MEDIUM_2,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 50,
-                height: 80,
-                child: CachedNetworkImage(
-                  imageUrl: '${book?.bookImage}',
-                  fit: BoxFit.fill,
-                ),
-              ),
-              SizedBox(
-                width: MARGIN_MEDIUM,
-              ),
-              Column(
-                children: [
-                  Text(
-                    '${book?.title}',
-                    style: const TextStyle(
-                      fontSize: TEXT_REGULAR,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Text(
-                    '${book?.author}',
-                    style: const TextStyle(
-                      fontSize: TEXT_SMALL,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(),
-        ListTile(
-          onTap: () {
-            //onEdit();
-          },
-          leading: Icon(Icons.file_download_outlined),
-          title: Text(
-            'Download',
-            style: TextStyle(
-              fontSize: TEXT_SMALL,
-            ),
-          ),
-        ),
-        ListTile(
-          onTap: () {
-            onTapDelete();
-          },
-          leading: Icon(Icons.delete),
-          title: Text(
-            'Delete from your library',
-            style: TextStyle(
-              fontSize: TEXT_SMALL,
-            ),
-          ),
-        ),
-        ListTile(
-          onTap: () {
-            onTapAddToShelf();
-          },
-          leading: Icon(Icons.add),
-          title: Text(
-            'Add to Shelf',
-            style: TextStyle(
-              fontSize: TEXT_SMALL,
-            ),
-          ),
-        ),
-        ListTile(
-          onTap: () {
-            //onDelected();
-          },
-          leading: Icon(Icons.done),
-          title: Text(
-            'Make as read',
-            style: TextStyle(
-              fontSize: TEXT_SMALL,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       mainAxisSize: MainAxisSize.min,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Padding(
+//           padding: const EdgeInsets.symmetric(
+//             horizontal: MARGIN_CARD_MEDIUM,
+//             vertical: MARGIN_MEDIUM_2,
+//           ),
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               SizedBox(
+//                 width: 50,
+//                 height: 80,
+//                 child: CachedNetworkImage(
+//                   imageUrl: '${book?.bookImage}',
+//                   fit: BoxFit.fill,
+//                 ),
+//               ),
+//               SizedBox(
+//                 width: MARGIN_MEDIUM,
+//               ),
+//               Column(
+//                 children: [
+//                   Text(
+//                     '${book?.title}',
+//                     style: const TextStyle(
+//                       fontSize: TEXT_REGULAR,
+//                       fontWeight: FontWeight.w400,
+//                     ),
+//                   ),
+//                   Text(
+//                     '${book?.author}',
+//                     style: const TextStyle(
+//                       fontSize: TEXT_SMALL,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//         Divider(),
+//         ListTile(
+//           onTap: () {
+//             //onEdit();
+//           },
+//           leading: Icon(Icons.file_download_outlined),
+//           title: Text(
+//             'Download',
+//             style: TextStyle(
+//               fontSize: TEXT_SMALL,
+//             ),
+//           ),
+//         ),
+//         ListTile(
+//           onTap: () {
+//             onTapDelete();
+//           },
+//           leading: Icon(Icons.delete),
+//           title: Text(
+//             'Delete from your library',
+//             style: TextStyle(
+//               fontSize: TEXT_SMALL,
+//             ),
+//           ),
+//         ),
+//         ListTile(
+//           onTap: () {
+//             onTapAddToShelf();
+//           },
+//           leading: Icon(Icons.add),
+//           title: Text(
+//             'Add to Shelf',
+//             style: TextStyle(
+//               fontSize: TEXT_SMALL,
+//             ),
+//           ),
+//         ),
+//         ListTile(
+//           onTap: () {
+//             //onDelected();
+//           },
+//           leading: Icon(Icons.done),
+//           title: Text(
+//             'Make as read',
+//             style: TextStyle(
+//               fontSize: TEXT_SMALL,
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class TitleAndBookListView extends StatelessWidget {
   const TitleAndBookListView({
     Key? key,
     this.mTitle,
+    this.audio,
     this.mBookList,
     required this.onTapForward,
     required this.onTapBook,
@@ -352,6 +370,7 @@ class TitleAndBookListView extends StatelessWidget {
   }) : super(key: key);
 
   final String? mTitle;
+  final bool? audio;
   final List<BookVO>? mBookList;
   final Function onTapForward;
   final Function(BookVO?) onTapBook;
@@ -411,6 +430,7 @@ class TitleAndBookListView extends StatelessWidget {
                 book?.listName = mTitle;
                 return BookViewItem(
                   book: book,
+                  audio: audio,
                   onTapBook: (book) {
                     onTapBook(book);
                   },

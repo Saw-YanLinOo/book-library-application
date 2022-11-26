@@ -25,7 +25,15 @@ class LibraryPageBloc extends ChangeNotifier {
     });
 
     _bookModel.getAllShelfFromDatabase().listen((event) {
-      debugPrint("get shelf page");
+      debugPrint("get your shelf page");
+      shelflist = event;
+      notifyListeners();
+    });
+  }
+
+  getShref() {
+    _bookModel.getAllShelfFromDatabase().listen((event) {
+      debugPrint("get your shelf page");
       shelflist = event;
       notifyListeners();
     });

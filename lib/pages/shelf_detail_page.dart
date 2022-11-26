@@ -28,6 +28,40 @@ class ShelfDetailPage extends StatefulWidget {
 }
 
 class _ShelfDetailPageState extends State<ShelfDetailPage> {
+  void showNavigation(
+    BuildContext context,
+    Function onTapEdit,
+    Function onDelected,
+  ) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ChangeNotifierProvider.value(
+          value: SehlfDetailBloc(widget.shelf ?? ShelfVO()),
+          builder: (context, child) {
+            return UpdateShelfView(
+              shelfName: widget.shelf?.shelfName,
+              onEdit: () {
+                onTapEdit();
+              },
+              onDelected: () {
+                onDelected();
+                // context
+                //     .read<SehlfDetailBloc>()
+                //     .onDeleteShelf(widget.shelf?.index ?? '');
+                // Timer(const Duration(seconds: 1), () {
+                //   Navigator.of(context)
+                //     ..pop()
+                //     ..pop();
+                // });
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint('shelf :: ${widget.shelf?.index}');
@@ -38,7 +72,7 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
 
     return ChangeNotifierProvider<SehlfDetailBloc>(
       create: (context) => SehlfDetailBloc(widget.shelf ?? ShelfVO()),
-      child: Scaffold(
+      builder: (context, child) => Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -53,34 +87,22 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
           ),
           actions: [
             InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return ChangeNotifierProvider.value(
-                      value: SehlfDetailBloc(widget.shelf ?? ShelfVO()),
-                      builder: (context, child) {
-                        return UpdateShelfView(
-                          shelfName: widget.shelf?.shelfName,
-                          onEdit: () {
-                            context.read<SehlfDetailBloc>().onedit(true);
-                            Navigator.pop(context);
-                          },
-                          onDelected: () {
-                            context
-                                .read<SehlfDetailBloc>()
-                                .onDeleteShelf(widget.shelf?.index ?? '');
-                            Timer(const Duration(seconds: 1), () {
-                              Navigator.of(context)
-                                ..pop()
-                                ..pop();
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                );
+              onTap: () async {
+                showNavigation(context, () {
+                  debugPrint('edit shelf name');
+                  context.read<SehlfDetailBloc>().onedit(true);
+                  Navigator.pop(context, true);
+                }, () {
+                  debugPrint('on delete shelf');
+                  context
+                      .read<SehlfDetailBloc>()
+                      .onDeleteShelf(widget.shelf?.index ?? '');
+                  Timer(const Duration(seconds: 1), () {
+                    Navigator.of(context)
+                      ..pop()
+                      ..pop();
+                  });
+                });
               },
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: MARGIN_CARD_MEDIUM),
@@ -109,9 +131,10 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
                           edit: edit,
                           shelfVO: shelfVO,
                           onEditSummit: (value) {
-                            context
-                                .read<SehlfDetailBloc>()
-                                .renameShelf(value ?? '', shelfVO?.index ?? '');
+                            var bloc = context.read<SehlfDetailBloc>();
+
+                            bloc.renameShelf(value ?? '', shelfVO?.index ?? '');
+                            bloc.onedit(false);
                           },
                         );
                       });
@@ -130,6 +153,8 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
                         : CustomShowBookView(
                             booklist: booklist,
                             filterlist: filterList,
+                            onTapBook: (book) {},
+                            onTapSeeMore: (book) {},
                             onFilterCategory: (list) {
                               context
                                   .read<SehlfDetailBloc>()
@@ -195,6 +220,9 @@ class ShelfHeaderSection extends StatelessWidget {
             ),
             child: TextFormField(
               initialValue: '${shelfVO?.shelfName}',
+              onFieldSubmitted: (value) {
+                onEditSummit(value);
+              },
               onSaved: (value) {
                 onEditSummit(value);
               },

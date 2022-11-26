@@ -17,22 +17,27 @@ class ShelfVO {
   String? index;
   @HiveField(3)
   List<String>? bookTiteList;
+  @HiveField(4)
+  List<Map<String, BookVO>>? bookMap;
 
   ShelfVO({
     this.shelfName,
-    this.bookList,
     this.index,
+    this.bookList,
     this.bookTiteList,
+    this.bookMap,
   });
 
   @override
-  bool operator ==(covariant ShelfVO other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other.shelfName == shelfName &&
+    return other is ShelfVO &&
+        other.shelfName == shelfName &&
         listEquals(other.bookList, bookList) &&
         other.index == index &&
-        listEquals(other.bookTiteList, bookTiteList);
+        listEquals(other.bookTiteList, bookTiteList) &&
+        listEquals(other.bookMap, bookMap);
   }
 
   @override
@@ -40,6 +45,7 @@ class ShelfVO {
     return shelfName.hashCode ^
         bookList.hashCode ^
         index.hashCode ^
-        bookTiteList.hashCode;
+        bookTiteList.hashCode ^
+        bookMap.hashCode;
   }
 }

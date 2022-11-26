@@ -15,6 +15,7 @@ class YourShelfPage extends StatelessWidget {
     return Stack(
       children: [
         Selector<LibraryPageBloc, List<ShelfVO>?>(
+            shouldRebuild: (previous, next) => true,
             selector: (context, bloc) => bloc.shelflist,
             builder: (context, shelfs, child) {
               if (shelfs == null || shelfs.isEmpty) {
@@ -28,96 +29,89 @@ class YourShelfPage extends StatelessWidget {
                 );
               }
 
-              return ListView.separated(
+              return ListView.builder(
                 itemCount: shelfs.length,
                 padding:
                     const EdgeInsets.symmetric(horizontal: MARGIN_CARD_MEDIUM),
                 itemBuilder: (context, index) {
                   var shelf = shelfs[index];
                   return ShelfViewItem(
+                    key: UniqueKey(),
                     shelf: shelf,
                     onTapForward: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ShelfDetailPage(
-                            shelf: shelf,
-                          ),
+                          builder: (context) => ShelfDetailPage(shelf: shelf),
                         ),
                       );
                     },
                   );
                 },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
               );
             }),
         Align(
           alignment: Alignment.bottomCenter,
-          child: InkWell(
+          child: NewSheetButton(
             onTap: () {
-              //_showAddShelf(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const CreateShelfPage()),
               );
             },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(MARGIN_MEDIUM_2),
-              ),
-              padding: const EdgeInsets.all(MARGIN_MEDIUM),
-              margin: const EdgeInsets.only(bottom: MARGIN_CARD_MEDIUM),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                    size: MARGIN_MEDIUM_2,
-                  ),
-                  SizedBox(
-                    width: MARGIN_SMALL,
-                  ),
-                  Text(
-                    'Create New',
-                    style: TextStyle(
-                        fontSize: TEXT_SMALL,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       ],
     );
   }
+}
 
-  // _showAddShelf(BuildContext context) {
-  //   showModalBottomSheet(
-  //     isScrollControlled: true,
-  //     context: context,
-  //     builder: (context) {
-  //       return CreateShelfPage(onSubmitted: (value) {
-  //         _addShelf(context, value);
-  //       });
-  //     },
-  //   );
-  // }
+class NewSheetButton extends StatelessWidget {
+  const NewSheetButton({
+    Key? key,
+    required this.onTap,
+  }) : super(key: key);
 
-  // _addShelf(BuildContext context, String shefName) {
-  //   var shelf = ShelfVO(shelfName: shefName);
+  final Function onTap;
 
-  //   Provider.of<AddToShelfBloc>(context, listen: false).addShelf(shelf);
-  //   Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     Navigator.of(context).pop();
-  //   });
-  // }
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        onTap();
+        //_showAddShelf(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(MARGIN_MEDIUM_2),
+        ),
+        padding: const EdgeInsets.all(MARGIN_MEDIUM),
+        margin: const EdgeInsets.only(bottom: MARGIN_CARD_MEDIUM),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.edit,
+              color: Colors.white,
+              size: MARGIN_MEDIUM_2,
+            ),
+            SizedBox(
+              width: MARGIN_SMALL,
+            ),
+            Text(
+              'Create New',
+              style: TextStyle(
+                  fontSize: TEXT_SMALL,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class ShelfViewItem extends StatelessWidget {
@@ -132,63 +126,68 @@ class ShelfViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        SizedBox(
-          width: 80,
-          height: 80,
-          child: CachedNetworkImage(
-            imageUrl: '${shelf.bookList?.first.bookImage}',
-            fit: BoxFit.fill,
-            errorWidget: (context, _, __) {
-              return Container(
-                width: 80,
-                height: 80,
-                color: Colors.grey,
-              );
-            },
-          ),
-        ),
-        SizedBox(
-          width: MARGIN_MEDIUM,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 2,
-                child: Text(
-                  '${shelf.shelfName}',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X,
-                    fontWeight: FontWeight.w600,
+        Row(
+          children: [
+            SizedBox(
+              width: 80,
+              height: 80,
+              child: CachedNetworkImage(
+                imageUrl: '${shelf.bookList?.last.bookImage}',
+                fit: BoxFit.cover,
+                errorWidget: (context, _, __) {
+                  return Container(
+                    width: 80,
+                    height: 80,
+                    color: Colors.grey,
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              width: MARGIN_MEDIUM,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Text(
+                      '${shelf.shelfName}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: TEXT_REGULAR_2X,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    height: MARGIN_SMALL,
+                  ),
+                  Text(
+                    '${shelf.bookList?.length ?? 0} book',
+                    style: TextStyle(fontSize: TEXT_SMALL),
+                  )
+                ],
               ),
-              SizedBox(
-                height: MARGIN_SMALL,
+            ),
+            SizedBox(
+              width: MARGIN_MEDIUM,
+            ),
+            InkWell(
+              onTap: () {
+                onTapForward();
+              },
+              child: Icon(
+                Icons.arrow_forward_ios,
               ),
-              Text(
-                '${shelf.bookList?.length ?? 0} book',
-                style: TextStyle(fontSize: TEXT_SMALL),
-              )
-            ],
-          ),
+            )
+          ],
         ),
-        SizedBox(
-          width: MARGIN_MEDIUM,
-        ),
-        InkWell(
-          onTap: () {
-            onTapForward();
-          },
-          child: Icon(
-            Icons.arrow_forward_ios,
-          ),
-        )
+        Divider(),
       ],
     );
   }

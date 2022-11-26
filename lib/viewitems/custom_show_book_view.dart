@@ -23,6 +23,8 @@ class CustomShowBookView extends StatefulWidget {
     Key? key,
     this.booklist,
     this.filterlist,
+    required this.onTapBook,
+    required this.onTapSeeMore,
     required this.onFilterCategory,
     required this.onRemoveFilter,
     required this.onSortByFilter,
@@ -30,8 +32,10 @@ class CustomShowBookView extends StatefulWidget {
 
   final List<BookVO>? booklist;
   final List<String>? filterlist;
+  final Function(BookVO?) onTapBook;
+  final Function(BookVO? book) onTapSeeMore;
   final Function(List<String>?) onFilterCategory;
-  final Function(SortBy sortBy) onSortByFilter;
+  final Function(SortBy) onSortByFilter;
   final Function onRemoveFilter;
 
   @override
@@ -44,6 +48,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
   List<String>? unSelectedList = [];
   ViewAs viewAs = ViewAs.List;
   int groupValue = 0;
+  int sortByGroupValue = 0;
 
   @override
   void initState() {
@@ -76,7 +81,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
   }
 
   _onChangedSortBy(SortBy sortBy, int index) {
-    groupValue = index;
+    sortByGroupValue = index;
     widget.onSortByFilter(sortBy);
     //ssetState(() {});
   }
@@ -217,7 +222,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
 
                                     return RadioListTile(
                                       value: index,
-                                      groupValue: groupValue,
+                                      groupValue: sortByGroupValue,
                                       onChanged: (value) {
                                         _onChangedSortBy(sortBy, index);
                                         setStated(() {});
@@ -238,7 +243,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                     width: MARGIN_MEDIUM,
                   ),
                   Text(
-                    'Sort by : Recent ',
+                    'Sort by : ${SortBy.values[sortByGroupValue].name} ',
                     style: TextStyle(
                       color: Colors.grey,
                     ),
@@ -315,11 +320,35 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
           child: () {
             switch (viewAs) {
               case ViewAs.List:
-                return ListViewSection(bookList: widget.booklist);
+                return ListViewSection(
+                  bookList: widget.booklist,
+                  onTapBook: (book) {
+                    widget.onTapBook(book);
+                  },
+                  onTapSeeMore: (book) {
+                    widget.onTapSeeMore(book);
+                  },
+                );
               case ViewAs.LargeGrid:
-                return LargeGridViewSection(bookList: widget.booklist);
+                return LargeGridViewSection(
+                  bookList: widget.booklist,
+                  onTapBook: (book) {
+                    widget.onTapBook(book);
+                  },
+                  onTapSeeMore: (book) {
+                    widget.onTapSeeMore(book);
+                  },
+                );
               case ViewAs.SmallGrid:
-                return SmallGridViewSection(bookList: widget.booklist);
+                return SmallGridViewSection(
+                  bookList: widget.booklist,
+                  onTapBook: (book) {
+                    widget.onTapBook(book);
+                  },
+                  onTapSeeMore: (book) {
+                    widget.onTapSeeMore(book);
+                  },
+                );
             }
           }(),
         )
@@ -331,11 +360,14 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
 class ListViewSection extends StatelessWidget {
   const ListViewSection({
     Key? key,
-    required this.bookList,
+    this.bookList,
+    required this.onTapBook,
+    required this.onTapSeeMore,
   }) : super(key: key);
 
   final List<BookVO>? bookList;
-
+  final Function(BookVO?) onTapBook;
+  final Function(BookVO?) onTapSeeMore;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -349,75 +381,85 @@ class ListViewSection extends StatelessWidget {
         itemBuilder: (context, index) {
           var book = bookList?[index];
 
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 60,
-                    height: 100,
-                    child: CachedNetworkImage(
-                      imageUrl: '${book?.bookImage}',
-                      fit: BoxFit.fill,
+          return GestureDetector(
+            onTap: () {
+              onTapBook(book);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 60,
+                      height: 100,
+                      child: CachedNetworkImage(
+                        imageUrl: '${book?.bookImage}',
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: MARGIN_MEDIUM_2,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 3,
-                        child: Text(
-                          '${book?.title}',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: TEXT_REGULAR,
-                            fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: MARGIN_MEDIUM_2,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 3,
+                          child: Text(
+                            '${book?.title}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: TEXT_REGULAR,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: MARGIN_SMALL,
-                      ),
-                      Text(
-                        '${book?.author}',
-                        style: TextStyle(
-                          fontSize: TEXT_SMALL,
+                        SizedBox(
+                          height: MARGIN_SMALL,
                         ),
-                      ),
-                      SizedBox(
-                        height: MARGIN_SMALL,
-                      ),
-                      Text(
-                        '${book?.author}',
-                        style: TextStyle(
-                          fontSize: TEXT_SMALL,
+                        Text(
+                          '${book?.author}',
+                          style: TextStyle(
+                            fontSize: TEXT_SMALL,
+                          ),
                         ),
+                        SizedBox(
+                          height: MARGIN_SMALL,
+                        ),
+                        Text(
+                          '${book?.author}',
+                          style: TextStyle(
+                            fontSize: TEXT_SMALL,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.file_download_outlined,
+                    ),
+                    SizedBox(
+                      width: MARGIN_XL_LARGE,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        onTapSeeMore(book);
+                      },
+                      child: Icon(
+                        FontAwesomeIcons.ellipsis,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.file_download_outlined,
-                  ),
-                  SizedBox(
-                    width: MARGIN_XL_LARGE,
-                  ),
-                  Icon(
-                    FontAwesomeIcons.ellipsis,
-                  ),
-                ],
-              ),
-            ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           );
         },
         separatorBuilder: (BuildContext context, int index) {
@@ -434,9 +476,13 @@ class LargeGridViewSection extends StatelessWidget {
   const LargeGridViewSection({
     Key? key,
     required this.bookList,
+    required this.onTapBook,
+    required this.onTapSeeMore,
   }) : super(key: key);
 
   final List<BookVO>? bookList;
+  final Function(BookVO?) onTapSeeMore;
+  final Function(BookVO?) onTapBook;
 
   @override
   Widget build(BuildContext context) {
@@ -459,7 +505,12 @@ class LargeGridViewSection extends StatelessWidget {
           var book = bookList?[index];
           return LargeBookViewItem(
             book: book,
-            onTapSeeMore: () {},
+            onTapBook: () {
+              onTapBook(book);
+            },
+            onTapSeeMore: () {
+              onTapSeeMore(book);
+            },
           );
         },
       ),
@@ -471,9 +522,13 @@ class SmallGridViewSection extends StatelessWidget {
   const SmallGridViewSection({
     Key? key,
     required this.bookList,
+    required this.onTapBook,
+    required this.onTapSeeMore,
   }) : super(key: key);
 
   final List<BookVO>? bookList;
+  final Function(BookVO?) onTapSeeMore;
+  final Function(BookVO?) onTapBook;
 
   @override
   Widget build(BuildContext context) {
@@ -496,8 +551,12 @@ class SmallGridViewSection extends StatelessWidget {
           var book = bookList?[index];
           return BookViewItem(
             book: book,
-            onTapSeeMore: () {},
-            onTapBook: (book){},
+            onTapSeeMore: () {
+              onTapSeeMore(book);
+            },
+            onTapBook: (book) {
+              onTapBook(book);
+            },
           );
         },
       ),

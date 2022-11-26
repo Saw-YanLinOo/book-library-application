@@ -27,6 +27,7 @@ class SehlfDetailBloc extends ChangeNotifier {
   }
 
   renameShelf(String name, String index) {
+    debugPrint('rename shelf $name');
     bookModel.renameShelf(name, index);
   }
 

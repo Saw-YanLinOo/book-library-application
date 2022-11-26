@@ -19,6 +19,7 @@ class ShelfDaoImpl extends ShelfDao {
 
   @override
   void saveShelf(ShelfVO shelfVO) async {
+    debugPrint('save shelf index :: ${shelfVO.index}');
     await getSelfBox().put(shelfVO.index, shelfVO);
   }
 
@@ -57,8 +58,8 @@ class ShelfDaoImpl extends ShelfDao {
   void addBooToShelf(String index, BookVO bookVO) {
     var shelf = getShelf(index);
     shelf?.bookList ??= [];
-    shelf?.bookList?.add(bookVO);
     shelf?.bookTiteList ??= [];
+    shelf?.bookList?.add(bookVO);
     shelf?.bookTiteList?.add(bookVO.title ?? '');
 
     debugPrint('add book to shelf($index) bookList :: ${shelf?.bookList}');
@@ -68,10 +69,11 @@ class ShelfDaoImpl extends ShelfDao {
   @override
   void removeBooToShelf(String index, BookVO bookVO) {
     var shelf = getShelf(index);
-    shelf?.bookList?.remove(bookVO);
-    shelf?.bookTiteList?.remove(bookVO.title ?? '');
-    debugPrint('remove book to shelf($index) bookList :: ${shelf?.bookList}');
 
-    saveShelf(shelf ?? ShelfVO());
+    // shelf?.bookList?.remove(bookVO);
+    // shelf?.bookTiteList?.remove(bookVO.title ?? '');
+    // debugPrint('remove book to shelf($index) bookList :: ${shelf?.bookList}');
+
+    // saveShelf(shelf ?? ShelfVO());
   }
 }

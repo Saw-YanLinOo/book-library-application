@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/data/vos/book_vo.dart';
+import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/pages/home.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/resourses/dimens.dart';
@@ -20,6 +22,23 @@ class TitleAndBookPage extends StatefulWidget {
 }
 
 class _TitleAndBookPageState extends State<TitleAndBookPage> {
+  showBottomSheet(
+    BuildContext context,
+    BookVO? bookVO, {
+    required Function onTapAboutTheBook,
+  }) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return LargeBookSettingSheetView(
+            book: bookVO,
+            onTapAboutTheBook: () {
+              onTapAboutTheBook();
+            },
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +78,118 @@ class _TitleAndBookPageState extends State<TitleAndBookPage> {
 
           return LargeBookViewItem(
             book: book,
-            onTapSeeMore: () {},
+            onTapBook: (){},
+            onTapSeeMore: () {
+              showBottomSheet(context, book, onTapAboutTheBook: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookDetailPage(
+                      listName: widget.mtitle,
+                      mBook: book,
+                    ),
+                  ),
+                );
+              });
+            },
           );
         },
       ),
+    );
+  }
+}
+
+class LargeBookSettingSheetView extends StatelessWidget {
+  const LargeBookSettingSheetView({
+    Key? key,
+    this.book,
+    required this.onTapAboutTheBook,
+  }) : super(key: key);
+
+  final BookVO? book;
+  final Function onTapAboutTheBook;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: MARGIN_CARD_MEDIUM,
+            vertical: MARGIN_MEDIUM_2,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 50,
+                height: 80,
+                child: CachedNetworkImage(
+                  imageUrl: '${book?.bookImage}',
+                  fit: BoxFit.fill,
+                ),
+              ),
+              SizedBox(
+                width: MARGIN_MEDIUM,
+              ),
+              Column(
+                children: [
+                  Text(
+                    '${book?.title}',
+                    style: const TextStyle(
+                      fontSize: TEXT_REGULAR,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    '${book?.author}',
+                    style: const TextStyle(
+                      fontSize: TEXT_SMALL,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Divider(),
+        ListTile(
+          onTap: () {
+            //onEdit();
+          },
+          leading: Icon(Icons.add_to_photos_outlined),
+          title: Text(
+            'Free sample',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () {},
+          leading: Icon(Icons.bookmark_add_outlined),
+          title: Text(
+            'Add to whishlist',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            onTapAboutTheBook();
+          },
+          leading: Icon(Icons.book),
+          title: Text(
+            'About this book',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

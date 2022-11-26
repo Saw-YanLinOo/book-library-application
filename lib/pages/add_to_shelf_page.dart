@@ -6,13 +6,19 @@ import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:provider/provider.dart';
 
-class AddToShelfPage extends StatelessWidget {
+class AddToShelfPage extends StatefulWidget {
   const AddToShelfPage({
     Key? key,
     this.book,
   }) : super(key: key);
 
   final BookVO? book;
+
+  @override
+  State<AddToShelfPage> createState() => _AddToShelfPageState();
+}
+
+class _AddToShelfPageState extends State<AddToShelfPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AddToShelfBloc>(
@@ -47,6 +53,7 @@ class AddToShelfPage extends StatelessWidget {
           ],
         ),
         body: Selector<AddToShelfBloc, List<ShelfVO>?>(
+          shouldRebuild: (previous, next) => true,
           selector: (context, bloc) => bloc.shelfList,
           builder: (context, shelfs, child) {
             return ListView.separated(
@@ -56,13 +63,14 @@ class AddToShelfPage extends StatelessWidget {
 
                 return ShelfView(
                   shelf: shelf,
-                  isCheck: shelf?.bookTiteList?.contains(book?.title),
+                  isCheck: shelf?.bookTiteList?.contains(widget.book?.title),
                   onShelfCheck: (value) {
                     context.read<AddToShelfBloc>().bookToShelf(
                           shelf ?? ShelfVO(),
-                          book ?? BookVO(),
+                          widget.book ?? BookVO(),
                           value ?? false,
                         );
+                    //setState(() {});
                   },
                 );
               },
@@ -96,7 +104,7 @@ class ShelfView extends StatelessWidget {
           width: 80,
           height: 80,
           child: CachedNetworkImage(
-            imageUrl: '${shelf?.bookList?.first.bookImage}',
+            imageUrl: '${shelf?.bookList?.last.bookImage}',
             fit: BoxFit.fill,
             errorWidget: (context, _, __) {
               return Container(
