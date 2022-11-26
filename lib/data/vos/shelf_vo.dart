@@ -11,7 +11,7 @@ class ShelfVO {
   @HiveField(1)
   List<BookVO>? bookList;
   @HiveField(2)
-  int? index;
+  String? index;
 
   ShelfVO({
     this.shelfName,

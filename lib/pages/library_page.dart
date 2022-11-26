@@ -39,16 +39,22 @@ class _LibraryPageState extends State<LibraryPage>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TabBarViewWidget(
-          tabController: _tabController,
-          onTap: (index) {
-            LibraryPageBloc bloc = Provider.of(context, listen: false);
-            bloc.onChanged(index);
+        Selector<LibraryPageBloc, int>(
+          selector: (context, bloc) => bloc.currentIndex,
+          builder: (context, value, child) {
+            _tabController.index = value;
+            return TabBarViewWidget(
+              tabController: _tabController,
+              onTap: (index) {
+                LibraryPageBloc bloc = Provider.of(context, listen: false);
+                bloc.onChanged(index);
+              },
+              tabItems: const [
+                Tab(text: YOUR_BOOK_TEXT),
+                Tab(text: YOUR_SHELVES_TEXT),
+              ],
+            );
           },
-          tabItems: const [
-            Tab(text: YOUR_BOOK_TEXT),
-            Tab(text: YOUR_SHELVES_TEXT),
-          ],
         ),
         SizedBox(
           height: MARGIN_LARGE,

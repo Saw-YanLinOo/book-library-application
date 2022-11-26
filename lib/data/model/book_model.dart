@@ -6,9 +6,12 @@ abstract class BookModel {
   void saveBook(BookVO book);
   void saveShelf(ShelfVO shelf);
   void getOverViewJson(String date);
+  void deleteShelf(String index);
+  void renameShelf(String name, String index);
   Stream<OverViewVO?> getOverViewJsonFromDatabase(String date);
   Stream<List<BookVO>?> getBookFromDatabase();
   Stream<List<String>?> getListNameFromDatabase();
   Stream<List<BookVO>?> getBookByListNameFromDatabase(List<String> listName);
   Stream<List<ShelfVO>?> getAllShelfFromDatabase();
+  Stream<ShelfVO?> getShelfFromDatabase(String index);
 }

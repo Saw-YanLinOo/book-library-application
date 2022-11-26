@@ -27,6 +27,9 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage> {
   @override
   Widget build(BuildContext context) {
+    widget.mBook?.listName = widget.listName;
+    widget.mBook?.openDate = DateTime.now();
+
     return ChangeNotifierProvider<BookDetailBloc>(
       lazy: false,
       create: (context) => BookDetailBloc(widget.mBook ?? BookVO()),

@@ -86,4 +86,21 @@ class BookModelImpl implements BookModel {
     debugPrint('save shelf');
     mShelfDao.saveShelf(shelf);
   }
+
+  @override
+  Stream<ShelfVO?> getShelfFromDatabase(String index) {
+    return mShelfDao
+        .getAllShelfStream()
+        .map((event) => mShelfDao.getShelf(index));
+  }
+
+  @override
+  void deleteShelf(String index) {
+    mShelfDao.removeShelf(index);
+  }
+
+  @override
+  void renameShelf(String name, String index) {
+    mShelfDao.renameShelf(name, index);
+  }
 }
