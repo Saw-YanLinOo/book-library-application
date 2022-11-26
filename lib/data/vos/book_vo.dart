@@ -13,7 +13,7 @@ part 'book_vo.g.dart';
 class BookVO {
   @JsonKey(name: 'age_group')
   @HiveField(0)
-  final String? ageGroup;
+  String? ageGroup;
 
   @JsonKey(name: 'amazon_product_url')
   @HiveField(1)
@@ -25,11 +25,11 @@ class BookVO {
 
   @JsonKey(name: 'author')
   @HiveField(3)
-  final String? author;
+  String? author;
 
   @JsonKey(name: 'book_image')
   @HiveField(4)
-  final String? bookImage;
+  String? bookImage;
 
   @JsonKey(name: 'book_image_width')
   @HiveField(5)
@@ -49,15 +49,15 @@ class BookVO {
 
   @JsonKey(name: 'contributor_note')
   @HiveField(9)
-  final String? contributorNote;
+  String? contributorNote;
 
   @JsonKey(name: 'created_date')
   @HiveField(10)
-  final DateTime? createdDate;
+  DateTime? createdDate;
 
   @JsonKey(name: 'description')
   @HiveField(11)
-  final String? description;
+  String? description;
 
   @JsonKey(name: 'first_chapter_link')
   @HiveField(12)
@@ -65,7 +65,7 @@ class BookVO {
 
   @JsonKey(name: 'price')
   @HiveField(13)
-  final String? price;
+  String? price;
 
   @JsonKey(name: 'primary_isbn10')
   @HiveField(14)
@@ -81,7 +81,7 @@ class BookVO {
 
   @JsonKey(name: 'publisher')
   @HiveField(17)
-  final String? publisher;
+  String? publisher;
 
   @JsonKey(name: 'rank')
   @HiveField(18)
@@ -97,7 +97,7 @@ class BookVO {
 
   @JsonKey(name: 'title')
   @HiveField(21)
-  final String? title;
+  String? title;
 
   @JsonKey(name: 'updated_date')
   @HiveField(22)
@@ -158,65 +158,64 @@ class BookVO {
   @override
   bool operator ==(covariant BookVO other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.ageGroup == ageGroup &&
-      other.amazonProductUrl == amazonProductUrl &&
-      other.articleChapterLink == articleChapterLink &&
-      other.author == author &&
-      other.bookImage == bookImage &&
-      other.bookImageWidth == bookImageWidth &&
-      other.bookImageHeight == bookImageHeight &&
-      other.bookReviewLink == bookReviewLink &&
-      other.contributor == contributor &&
-      other.contributorNote == contributorNote &&
-      other.createdDate == createdDate &&
-      other.description == description &&
-      other.firstChapterLink == firstChapterLink &&
-      other.price == price &&
-      other.primaryIsbn10 == primaryIsbn10 &&
-      other.primaryIsbn13 == primaryIsbn13 &&
-      other.bookUri == bookUri &&
-      other.publisher == publisher &&
-      other.rank == rank &&
-      other.rankLastWeek == rankLastWeek &&
-      other.sundayReviewLink == sundayReviewLink &&
-      other.title == title &&
-      other.updatedDate == updatedDate &&
-      other.weeksOnList == weeksOnList &&
-      listEquals(other.buyLinks, buyLinks) &&
-      other.openDate == openDate &&
-      other.listName == listName;
+
+    return other.ageGroup == ageGroup &&
+        other.amazonProductUrl == amazonProductUrl &&
+        other.articleChapterLink == articleChapterLink &&
+        other.author == author &&
+        other.bookImage == bookImage &&
+        other.bookImageWidth == bookImageWidth &&
+        other.bookImageHeight == bookImageHeight &&
+        other.bookReviewLink == bookReviewLink &&
+        other.contributor == contributor &&
+        other.contributorNote == contributorNote &&
+        other.createdDate == createdDate &&
+        other.description == description &&
+        other.firstChapterLink == firstChapterLink &&
+        other.price == price &&
+        other.primaryIsbn10 == primaryIsbn10 &&
+        other.primaryIsbn13 == primaryIsbn13 &&
+        other.bookUri == bookUri &&
+        other.publisher == publisher &&
+        other.rank == rank &&
+        other.rankLastWeek == rankLastWeek &&
+        other.sundayReviewLink == sundayReviewLink &&
+        other.title == title &&
+        other.updatedDate == updatedDate &&
+        other.weeksOnList == weeksOnList &&
+        listEquals(other.buyLinks, buyLinks) &&
+        other.openDate == openDate &&
+        other.listName == listName;
   }
 
   @override
   int get hashCode {
     return ageGroup.hashCode ^
-      amazonProductUrl.hashCode ^
-      articleChapterLink.hashCode ^
-      author.hashCode ^
-      bookImage.hashCode ^
-      bookImageWidth.hashCode ^
-      bookImageHeight.hashCode ^
-      bookReviewLink.hashCode ^
-      contributor.hashCode ^
-      contributorNote.hashCode ^
-      createdDate.hashCode ^
-      description.hashCode ^
-      firstChapterLink.hashCode ^
-      price.hashCode ^
-      primaryIsbn10.hashCode ^
-      primaryIsbn13.hashCode ^
-      bookUri.hashCode ^
-      publisher.hashCode ^
-      rank.hashCode ^
-      rankLastWeek.hashCode ^
-      sundayReviewLink.hashCode ^
-      title.hashCode ^
-      updatedDate.hashCode ^
-      weeksOnList.hashCode ^
-      buyLinks.hashCode ^
-      openDate.hashCode ^
-      listName.hashCode;
+        amazonProductUrl.hashCode ^
+        articleChapterLink.hashCode ^
+        author.hashCode ^
+        bookImage.hashCode ^
+        bookImageWidth.hashCode ^
+        bookImageHeight.hashCode ^
+        bookReviewLink.hashCode ^
+        contributor.hashCode ^
+        contributorNote.hashCode ^
+        createdDate.hashCode ^
+        description.hashCode ^
+        firstChapterLink.hashCode ^
+        price.hashCode ^
+        primaryIsbn10.hashCode ^
+        primaryIsbn13.hashCode ^
+        bookUri.hashCode ^
+        publisher.hashCode ^
+        rank.hashCode ^
+        rankLastWeek.hashCode ^
+        sundayReviewLink.hashCode ^
+        title.hashCode ^
+        updatedDate.hashCode ^
+        weeksOnList.hashCode ^
+        buyLinks.hashCode ^
+        openDate.hashCode ^
+        listName.hashCode;
   }
 }

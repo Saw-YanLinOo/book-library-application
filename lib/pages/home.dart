@@ -4,6 +4,7 @@ import 'package:library_app/blocs/home_page_bloc.dart';
 import 'package:library_app/blocs/library_page_bloc.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/pages/library_page.dart';
+import 'package:library_app/pages/search_page.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:library_app/resourses/strings.dart';
 import 'package:lottie/lottie.dart';
@@ -17,6 +18,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  _navigateToSearch(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SearchPage(),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HomePageBloc>(
@@ -35,7 +44,9 @@ class _HomeState extends State<Home> {
                 vertical: MARGIN_CARD_MEDIUM_2,
               ),
               child: HomeTitleView(
-                onTapSummit: (text) {},
+                onTapSummit: (text) {
+                  _navigateToSearch(context);
+                },
               ),
             ),
           ),
@@ -74,7 +85,7 @@ class _HomeState extends State<Home> {
 }
 
 class HomeTitleView extends StatelessWidget {
-  final Function(String) onTapSummit;
+  final Function(String?) onTapSummit;
   const HomeTitleView({
     Key? key,
     required this.onTapSummit,
@@ -83,7 +94,8 @@ class HomeTitleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: TextFormField(
+      child: TextField(
+        readOnly: true,
         decoration: InputDecoration(
           icon: Padding(
             padding: const EdgeInsets.only(left: 8.0),
@@ -96,6 +108,9 @@ class HomeTitleView extends StatelessWidget {
           ),
           hintText: 'Search Play Book',
         ),
+        onTap: () {
+          onTapSummit(null);
+        },
         // onSubmitted: (text) {
         //   onTapSummit(text);
         // },

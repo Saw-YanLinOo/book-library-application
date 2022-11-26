@@ -3,7 +3,7 @@ import 'package:library_app/data/model/book_model.dart';
 import 'package:library_app/data/model/book_model_impl.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
-import 'package:library_app/viewitems/custom_show_book_view.dart';
+import 'package:library_app/widgets/custom_show_book_view.dart';
 
 class SehlfDetailBloc extends ChangeNotifier {
   ShelfVO? shelf;

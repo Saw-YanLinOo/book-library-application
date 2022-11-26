@@ -183,12 +183,16 @@ class BookSwipperSetion extends StatelessWidget {
                 return Container(
                   child: Stack(
                     children: [
-                      CachedNetworkImage(
-                        imageUrl: book?.bookImage ?? '',
-                        fit: BoxFit.fill,
-                        errorWidget: (context, _, __) {
-                          return Lottie.asset('assets/book.json');
-                        },
+                      SizedBox(
+                        // width: 200,
+                        height: MediaQuery.of(context).size.height / 3,
+                        child: CachedNetworkImage(
+                          imageUrl: book?.bookImage ?? '',
+                          fit: BoxFit.fitHeight,
+                          errorWidget: (context, _, __) {
+                            return Lottie.asset('assets/book.json');
+                          },
+                        ),
                       ),
                       const Positioned(
                         top: 0,

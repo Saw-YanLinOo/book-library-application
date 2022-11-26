@@ -118,4 +118,15 @@ class BookModelImpl implements BookModel {
   void removeBookToShelf(String index, BookVO bookVO) {
     mShelfDao.removeBooToShelf(index, bookVO);
   }
+
+  @override
+  Future<List<BookVO>?> searchBook(String value) {
+    return mDataAgent.searchGoogleBook(value).then((books) {
+      debugPrint('search book first :::: ${books?.first.volumeInfo?.title}');
+      var bookList =
+          books?.map((gbook) => gbook.toBookVO(gbook, value)).toList();
+
+      return bookList;
+    });
+  }
 }

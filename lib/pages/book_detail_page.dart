@@ -169,7 +169,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.2,
                       child: Text(
-                        '${widget.mBook?.publisher}',
+                        '${widget.mBook?.contributorNote}',
                         style: TextStyle(
                           fontSize: TEXT_SMALL,
                           color: Colors.grey,
@@ -342,7 +342,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       padding:
                           const EdgeInsets.symmetric(vertical: MARGIN_MEDIUM),
                       child: UserCommandItemView(
-                        userName: widget.mBook?.contributor,
+                        userName: widget.mBook?.publisher,
                         userProfileImage: widget.mBook?.bookImage,
                         description:
                             'Iv wanted to read this story for years now I was so hyped up that i finally bought it after so long.. Then I read it and was sort of disappointed.. I\'m not saying is wasn\'t good..',

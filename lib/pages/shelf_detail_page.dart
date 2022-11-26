@@ -12,7 +12,7 @@ import 'package:library_app/pages/bottomsheet_page/update_shelf_view.dart';
 import 'package:library_app/pages/home.dart';
 import 'package:library_app/pages/home_page.dart';
 import 'package:library_app/resourses/dimens.dart';
-import 'package:library_app/viewitems/custom_show_book_view.dart';
+import 'package:library_app/widgets/custom_show_book_view.dart';
 import 'package:provider/provider.dart';
 
 class ShelfDetailPage extends StatefulWidget {

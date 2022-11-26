@@ -7,7 +7,7 @@ import 'package:library_app/pages/book_detail_page.dart';
 import 'package:library_app/pages/bottomsheet_page/book_setting_shelf_view.dart';
 import 'package:provider/provider.dart';
 
-import '../viewitems/custom_show_book_view.dart';
+import '../widgets/custom_show_book_view.dart';
 
 class YourBookPage extends StatelessWidget {
   const YourBookPage({Key? key}) : super(key: key);

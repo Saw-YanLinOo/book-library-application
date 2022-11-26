@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:library_app/data/vos/google_book_vo.dart';
 import 'package:library_app/data/vos/over_view_vo.dart';
 import 'package:library_app/network/api_constants.dart';
 import 'package:library_app/network/book_api.dart';
 import 'package:library_app/network/custom_log_interceptor.dart';
 import 'package:library_app/network/dataagents/book_data_agent.dart';
+import 'package:library_app/network/google_search_api.dart';
 
 class RetrofitBookDataAgent implements BookDataAgent {
   late BookApi mApi;
+  late GoogleSearchApi mGoogleApi;
 
   RetrofitBookDataAgent._() {
     final dio = Dio();
@@ -19,6 +22,7 @@ class RetrofitBookDataAgent implements BookDataAgent {
       ),
     );
     mApi = BookApi(dio);
+    mGoogleApi = GoogleSearchApi(dio);
   }
 
   static final RetrofitBookDataAgent _singleton = RetrofitBookDataAgent._();
@@ -30,6 +34,15 @@ class RetrofitBookDataAgent implements BookDataAgent {
         .getOverViewJson(API_KEY, date)
         .asStream()
         .map((event) => event.results)
+        .first;
+  }
+
+  @override
+  Future<List<GoogleBookVO>?> searchGoogleBook(String value) {
+    return mGoogleApi
+        .getSearchGoogleBook(value)
+        .asStream()
+        .map((event) => event.items)
         .first;
   }
 }

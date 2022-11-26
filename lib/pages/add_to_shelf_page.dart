@@ -58,6 +58,8 @@ class _AddToShelfPageState extends State<AddToShelfPage> {
           builder: (context, shelfs, child) {
             return ListView.separated(
               itemCount: shelfs?.length ?? 0,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: MARGIN_CARD_MEDIUM),
               itemBuilder: (context, index) {
                 var shelf = shelfs?[index];
 

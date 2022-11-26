@@ -4,13 +4,14 @@ import 'package:library_app/data/vos/shelf_vo.dart';
 
 abstract class BookModel {
   void getOverViewJson(String date);
+  Future<List<BookVO>?> searchBook(String value);
   void saveBook(BookVO book);
   void deleteBook(String title);
   void saveShelf(ShelfVO shelf);
   void deleteShelf(String index);
   void renameShelf(String name, String index);
-  void addBookToShelf(String index,BookVO bookVO);
-  void removeBookToShelf(String index,BookVO bookVO);
+  void addBookToShelf(String index, BookVO bookVO);
+  void removeBookToShelf(String index, BookVO bookVO);
   Stream<OverViewVO?> getOverViewJsonFromDatabase(String date);
   Stream<List<BookVO>?> getBookFromDatabase();
   Stream<List<String>?> getListNameFromDatabase();
