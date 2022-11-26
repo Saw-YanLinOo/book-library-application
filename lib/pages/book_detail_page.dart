@@ -169,7 +169,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.2,
                       child: Text(
-                        '${widget.mBook?.amazonProductUrl}',
+                        '${widget.mBook?.publisher}',
                         style: TextStyle(
                           fontSize: TEXT_SMALL,
                           color: Colors.grey,

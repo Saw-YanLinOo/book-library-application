@@ -47,9 +47,14 @@ class _TitleAndBookPageState extends State<TitleAndBookPage> {
         automaticallyImplyLeading: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.black,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
         ),
         title: Text(
           '${widget.mtitle}',
@@ -78,7 +83,7 @@ class _TitleAndBookPageState extends State<TitleAndBookPage> {
 
           return LargeBookViewItem(
             book: book,
-            onTapBook: (){},
+            onTapBook: () {},
             onTapSeeMore: () {
               showBottomSheet(context, book, onTapAboutTheBook: () {
                 Navigator.push(
