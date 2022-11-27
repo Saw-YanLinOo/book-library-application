@@ -484,7 +484,7 @@ class TextAndRatingBarView extends StatelessWidget {
         Stack(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.56,
+              width: MediaQuery.of(context).size.width * 0.55,
               height: 10,
               decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.5),
@@ -492,7 +492,7 @@ class TextAndRatingBarView extends StatelessWidget {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.56 * (value ?? 0),
+              width: MediaQuery.of(context).size.width * 0.55 * (value ?? 0),
               height: 10,
               decoration: BoxDecoration(
                 color: Colors.blue,
