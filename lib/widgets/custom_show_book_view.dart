@@ -25,18 +25,12 @@ class CustomShowBookView extends StatefulWidget {
     this.filterlist,
     required this.onTapBook,
     required this.onTapSeeMore,
-    required this.onFilterCategory,
-    required this.onRemoveFilter,
-    required this.onSortByFilter,
   }) : super(key: key);
 
   final List<BookVO>? booklist;
   final List<String>? filterlist;
   final Function(BookVO?) onTapBook;
   final Function(BookVO? book) onTapSeeMore;
-  final Function(List<String>?) onFilterCategory;
-  final Function(SortBy) onSortByFilter;
-  final Function onRemoveFilter;
 
   @override
   State<CustomShowBookView> createState() => _CustomShowBookViewState();
@@ -48,7 +42,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
   List<String>? unSelectedList = [];
   ViewAs viewAs = ViewAs.List;
   int groupValue = 0;
-  int sortByGroupValue = 0;
+  int sortByGroupValue = 1;
 
   List<BookVO>? bookList;
 
@@ -90,8 +84,30 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
   }
 
   _onChangedSortBy(SortBy sortBy, int index) {
+    List<BookVO>? newBookList = List.from(widget.booklist ?? []);
+
     sortByGroupValue = index;
-    widget.onSortByFilter(sortBy);
+    switch (sortBy) {
+      case SortBy.Recently:
+        {
+          newBookList.sort((a, b) => b.openDate!.compareTo(a.openDate!));
+          bookList = newBookList;
+          break;
+        }
+      case SortBy.Title:
+        {
+          newBookList.sort((a, b) => a.title!.compareTo(b.title!));
+          bookList = newBookList;
+          break;
+        }
+      case SortBy.Author:
+        {
+          newBookList.sort((a, b) => a.author!.compareTo(b.author!));
+          bookList = newBookList;
+          break;
+        }
+    }
+    setState(() {});
   }
 
   @override

@@ -155,19 +155,6 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
                             filterlist: filterList,
                             onTapBook: (book) {},
                             onTapSeeMore: (book) {},
-                            onFilterCategory: (list) {
-                              context
-                                  .read<SehlfDetailBloc>()
-                                  .onFilerListName(list ?? []);
-                            },
-                            onRemoveFilter: () {
-                              context.read<SehlfDetailBloc>().onRemoveFilter();
-                            },
-                            onSortByFilter: (sortBy) {
-                              context
-                                  .read<SehlfDetailBloc>()
-                                  .onFilterSortBy(sortBy);
-                            },
                           ),
                   );
                 },

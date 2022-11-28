@@ -73,18 +73,6 @@ class YourBookPage extends StatelessWidget {
                           });
                     });
               },
-              onRemoveFilter: () {
-                LibraryPageBloc bloc = Provider.of(context, listen: false);
-                bloc.onRemoveFilter();
-              },
-              onFilterCategory: (value) {
-                LibraryPageBloc bloc = Provider.of(context, listen: false);
-                bloc.onFilterList(value ?? []);
-              },
-              onSortByFilter: (SortBy sortBy) {
-                LibraryPageBloc bloc = Provider.of(context, listen: false);
-                bloc.onFilterSortBy(sortBy);
-              },
             );
           },
         );
