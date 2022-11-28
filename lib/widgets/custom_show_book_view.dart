@@ -50,6 +50,8 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
   int groupValue = 0;
   int sortByGroupValue = 0;
 
+  List<BookVO>? bookList;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -57,33 +59,39 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
 
     // unSelectedList = widget.filterlist;
     unSelectedList = List.from(widget.filterlist ?? []);
+    bookList = List.from(widget.booklist ?? []);
   }
 
   onTapCategory(String? value) {
+    List<BookVO>? newBookList = List.from(widget.booklist ?? []);
+
     selectedList ??= [];
     selectedList?.add(value ?? '');
     unSelectedList?.remove(value);
 
-    widget.onFilterCategory(selectedList);
+    var filterBookList = newBookList
+        .where((e) => selectedList?.contains(e.listName) ?? false)
+        .toList();
+    bookList = filterBookList;
+    setState(() {});
   }
 
   onRemoveCatgory() {
     selectedList = null;
     unSelectedList = List.from(widget.filterlist ?? []);
-    widget.onRemoveFilter();
+    bookList = List.from(widget.booklist ?? []);
+    setState(() {});
   }
 
   _onTapViewas(ViewAs mViewAs, int index) {
     viewAs = mViewAs;
     groupValue = index;
-    // widget.onViewAsFilter(mViewAs);
     setState(() {});
   }
 
   _onChangedSortBy(SortBy sortBy, int index) {
     sortByGroupValue = index;
     widget.onSortByFilter(sortBy);
-    //ssetState(() {});
   }
 
   @override
@@ -321,7 +329,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
             switch (viewAs) {
               case ViewAs.List:
                 return ListViewSection(
-                  bookList: widget.booklist,
+                  bookList: bookList,
                   onTapBook: (book) {
                     widget.onTapBook(book);
                   },
@@ -331,7 +339,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                 );
               case ViewAs.LargeGrid:
                 return LargeGridViewSection(
-                  bookList: widget.booklist,
+                  bookList: bookList,
                   onTapBook: (book) {
                     widget.onTapBook(book);
                   },
@@ -341,7 +349,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                 );
               case ViewAs.SmallGrid:
                 return SmallGridViewSection(
-                  bookList: widget.booklist,
+                  bookList: bookList,
                   onTapBook: (book) {
                     widget.onTapBook(book);
                   },
