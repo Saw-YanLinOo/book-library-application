@@ -581,6 +581,7 @@ class SmallGridViewSection extends StatelessWidget {
             onTapBook: (book) {
               onTapBook(book);
             },
+            onTapTitle: (book) {},
           );
         },
       ),

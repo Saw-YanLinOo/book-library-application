@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart';
+
+const Key KEY_HOME_PAGE_BOTTOM_NAVIGATION_BAR =
+    Key('KEY_HOME_PAGE_BOTTOM_NAVIGATION_BAR');
+const Key KEY_NO_BOOK_VIEW_IN_SWIPPER = Key('KEY_NO_BOOK_VIEW_IN_SWIPPER');
+const Key KEY_BOOK_DETAIL_POP_ICON = Key('KEY_MOVIE_DETAIL_POP_ICON');
+const Key KEY_HOME_PAGE_SEARCH_FIELD = Key('KEY_HOME_PAGE_SEARCH_FIELD');
+const Key KEY_HOME_PAGE_HOME_ICONS = Key('KEY_HOME_PAGE_HOME_ICONS');
+const Key KEY_HOME_PAGE_LIBRARY_ICONS = Key('KEY_HOME_PAGE_LIBRARY_ICONS');
+const Key KEY_SWIPPER_BOOK_NAME_ONE = Key('$TEST_DATA_BOOK_NAME_ONE');
+const Key KEY_SWIPPER_BOOK_NAME_TWO = Key('$TEST_DATA_BOOK_NAME_TWO');
+const Key KEY_SWIPPER_BOOK_NAME_THREE = Key('$TEST_DATA_BOOK_NAME_THREE');
+
+const String TEST_DATA_LIST_NAME_ONE = "Combined Print and E-Book Fiction";
+const String TEST_DATA_BOOK_NAME_ONE = "THE LOST METAL";
+const String TEST_DATA_BOOK_AUTHOR_ONE = "Brandon Sanderson";
+
+const String TEST_DATA_LIST_NAME_TWO = "Combined Print and E-Book Nonfiction";
+const String TEST_DATA_BOOK_NAME_TWO = "SO HELP ME GOD";
+const String TEST_DATA_BOOK_AUTHOR_TWO = "Mike Pence";
+
+const String TEST_DATA_LIST_NAME_THREE = "Business Books";
+const String TEST_DATA_BOOK_NAME_THREE = "ADRIFT";
+const String TEST_DATA_BOOK_AUTHOR_THREE = "Scott Galloway";

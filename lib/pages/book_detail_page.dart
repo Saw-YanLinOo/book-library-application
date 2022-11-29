@@ -39,6 +39,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: true,
           leading: GestureDetector(
+            key: Key('KEY_MOVIE_DETAIL_POP_ICON'),
             onTap: () {
               Navigator.pop(context);
             },

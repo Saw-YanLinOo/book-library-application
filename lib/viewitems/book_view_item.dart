@@ -12,12 +12,15 @@ class BookViewItem extends StatelessWidget {
     this.audio,
     required this.onTapBook,
     required this.onTapSeeMore,
+    required this.onTapTitle,
   }) : super(key: key);
 
   final bool? audio;
   final BookVO? book;
   final Function(BookVO?) onTapBook;
   final Function onTapSeeMore;
+  final Function(BookVO?) onTapTitle;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -85,12 +88,17 @@ class BookViewItem extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            Text(
-              '${book?.title}',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: TEXT_SMALL,
+            InkWell(
+              onTap: () {
+                onTapTitle(book);
+              },
+              child: Text(
+                '${book?.title}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: TEXT_SMALL,
+                ),
               ),
             ),
             const SizedBox(

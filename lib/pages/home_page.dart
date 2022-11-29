@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage>
                 debugPrint('list lenget :::::::::::: ${lists?.length}');
 
                 return lists == null
-                    ? const CircularProgressIndicator()
+                    ? const SizedBox()
                     : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -101,6 +101,17 @@ class _HomePageState extends State<HomePage>
                                   builder: (context) => TitleAndBookPage(
                                     mBookList: list.books,
                                     mtitle: list.listName,
+                                  ),
+                                ),
+                              );
+                            },
+                            onTapBookTitle: (book) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetailPage(
+                                    mBook: book,
+                                    listName: list.listName,
                                   ),
                                 ),
                               );
@@ -171,7 +182,9 @@ class BookSwipperSetion extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 3,
       child: bookList == null || (bookList?.isEmpty ?? true)
-          ? Lottie.asset('assets/book.json')
+          ? const NoBookViewInSwipper(
+              key: Key('KEY_NO_BOOK_VIEW_IN_SWIPPER'),
+            )
           : Swiper(
               itemCount: bookList?.length ?? 0,
               viewportFraction: 0.5,
@@ -181,6 +194,7 @@ class BookSwipperSetion extends StatelessWidget {
                 var book = bookList?[index];
 
                 return Container(
+                  key: Key(book?.title ?? ''),
                   child: Stack(
                     children: [
                       SizedBox(
@@ -248,6 +262,17 @@ class BookSwipperSetion extends StatelessWidget {
               },
             ),
     );
+  }
+}
+
+class NoBookViewInSwipper extends StatelessWidget {
+  const NoBookViewInSwipper({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Lottie.asset('assets/book.json'));
   }
 }
 
@@ -371,6 +396,7 @@ class TitleAndBookListView extends StatelessWidget {
     required this.onTapForward,
     required this.onTapBook,
     required this.onTapSeeMore,
+    required this.onTapBookTitle,
   }) : super(key: key);
 
   final String? mTitle;
@@ -379,6 +405,7 @@ class TitleAndBookListView extends StatelessWidget {
   final Function onTapForward;
   final Function(BookVO?) onTapBook;
   final Function(BookVO?) onTapSeeMore;
+  final Function(BookVO?) onTapBookTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -440,6 +467,9 @@ class TitleAndBookListView extends StatelessWidget {
                   },
                   onTapSeeMore: () {
                     onTapSeeMore(book);
+                  },
+                  onTapTitle: (book) {
+                    onTapBookTitle(book);
                   },
                 );
               },

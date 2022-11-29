@@ -22,6 +22,7 @@ class HomePageBloc extends ChangeNotifier {
     });
 
     _bookModel.getBookFromDatabase().listen((books) {
+      books?.sort((a, b) => b.openDate!.compareTo(a.openDate!));
       previewbooklist = books;
       notifyListeners();
     });

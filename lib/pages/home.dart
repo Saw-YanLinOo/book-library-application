@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
           bottomNavigationBar: Selector<HomePageBloc, int>(
             selector: (context, bloc) => bloc.currentIndex,
             builder: (context, value, child) => BottomNavigationBar(
+              key: const Key('HOME_PAGE_BOTTOM_NAVIGATION_BAR'),
               backgroundColor: Colors.white,
               currentIndex: value,
               onTap: (value) {
@@ -95,6 +96,7 @@ class HomeTitleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: TextField(
+        key: const Key('KEY_HOME_PAGE_SEARCH_FIELD'),
         readOnly: true,
         decoration: InputDecoration(
           icon: Padding(
