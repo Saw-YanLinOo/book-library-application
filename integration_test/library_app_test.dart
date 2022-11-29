@@ -47,7 +47,7 @@ void main() async {
 
     // Book One
     expect(find.text(TEST_DATA_LIST_NAME_ONE), findsOneWidget);
-    expect(find.text(TEST_DATA_BOOK_NAME_ONE), findsOneWidget);
+    expect(find.text(TEST_DATA_BOOK_NAME_ONE), findsWidgets);
     await tester.tap(find.text(TEST_DATA_BOOK_NAME_ONE));
 
     await tester.pumpAndSettle(const Duration(seconds: 5));
@@ -64,7 +64,7 @@ void main() async {
     // Book Two
     await tester.drag(find.text(TEST_DATA_LIST_NAME_TWO), Offset(0.0, 100.0));
     expect(find.text(TEST_DATA_LIST_NAME_TWO), findsOneWidget);
-    expect(find.text(TEST_DATA_BOOK_NAME_TWO), findsOneWidget);
+    expect(find.text(TEST_DATA_BOOK_NAME_TWO), findsWidgets);
     await tester.tap(find.text(TEST_DATA_BOOK_NAME_TWO));
 
     await tester.pumpAndSettle(const Duration(seconds: 5));

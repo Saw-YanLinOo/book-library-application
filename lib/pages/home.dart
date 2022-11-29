@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
           bottomNavigationBar: Selector<HomePageBloc, int>(
             selector: (context, bloc) => bloc.currentIndex,
             builder: (context, value, child) => BottomNavigationBar(
-              key: const Key('HOME_PAGE_BOTTOM_NAVIGATION_BAR'),
+              key: const Key('KEY_HOME_PAGE_BOTTOM_NAVIGATION_BAR'),
               backgroundColor: Colors.white,
               currentIndex: value,
               onTap: (value) {
@@ -104,9 +104,21 @@ class HomeTitleView extends StatelessWidget {
             child: const Icon(Icons.search),
           ),
           border: InputBorder.none,
-          suffixIcon: Lottie.asset(
-            'assets/young-boy.json',
-            height: 32,
+          // suffixIcon: Lottie.asset(
+          //   'assets/young-boy.json',
+          //   height: 32,
+          // ),
+          suffixIcon: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey,
+            ),
+            padding: const EdgeInsets.all(MARGIN_MEDIUM),
+            child: Icon(
+              Icons.person,
+              size: 32,
+              color: Colors.white,
+            ),
           ),
           hintText: 'Search Play Book',
         ),

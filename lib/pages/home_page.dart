@@ -272,7 +272,10 @@ class NoBookViewInSwipper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Lottie.asset('assets/book.json'));
+    return Container(
+      //child: Lottie.asset('assets/book.json'),
+      child: SizedBox(),
+    );
   }
 }
 
