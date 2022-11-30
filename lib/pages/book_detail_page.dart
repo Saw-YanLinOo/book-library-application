@@ -101,7 +101,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         ),
                       ),
                       Text(
-                        '${widget.mBook?.author}',
+                        '${widget.mBook?.rank} rank',
                         style: TextStyle(
                           fontSize: TEXT_SMALL,
                           color: Colors.grey,

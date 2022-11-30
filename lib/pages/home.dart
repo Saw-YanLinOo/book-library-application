@@ -108,18 +108,11 @@ class HomeTitleView extends StatelessWidget {
           //   'assets/young-boy.json',
           //   height: 32,
           // ),
-          suffixIcon: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey,
-            ),
-            padding: const EdgeInsets.all(MARGIN_MEDIUM),
-            child: Icon(
-              Icons.person,
-              size: 32,
-              color: Colors.white,
-            ),
+          suffixIcon: Icon(
+            Icons.person,
+            size: MARGIN_LARGE,
           ),
+
           hintText: 'Search Play Book',
         ),
         onTap: () {

@@ -27,6 +27,18 @@ class _SearchPageState extends State<SearchPage>
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  navigateToBookDetail(BuildContext context, String? listName, BookVO? book) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookDetailPage(
+          listName: book?.listName,
+          mBook: book,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SearchPageBloc>(
@@ -37,6 +49,7 @@ class _SearchPageState extends State<SearchPage>
             elevation: 0,
             backgroundColor: Colors.transparent,
             leading: InkWell(
+              key: const Key('SEARCH_PAGE_POP_ICON'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -104,15 +117,10 @@ class _SearchPageState extends State<SearchPage>
                   ListViewSection(
                     bookList: books,
                     onTapBook: (book) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BookDetailPage(
-                            listName: book?.listName,
-                            mBook: book,
-                          ),
-                        ),
-                      );
+                      navigateToBookDetail(context, book?.listName, book);
+                    },
+                    onTapBookName: (book) {
+                      navigateToBookDetail(context, book?.listName, book);
                     },
                     onTapSeeMore: (book) {},
                   ),
@@ -131,11 +139,13 @@ class ListViewSection extends StatelessWidget {
     Key? key,
     this.bookList,
     required this.onTapBook,
+    required this.onTapBookName,
     required this.onTapSeeMore,
   }) : super(key: key);
 
   final List<BookVO>? bookList;
   final Function(BookVO?) onTapBook;
+  final Function(BookVO?) onTapBookName;
   final Function(BookVO?) onTapSeeMore;
   @override
   Widget build(BuildContext context) {
@@ -171,15 +181,20 @@ class ListViewSection extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.6,
-                      child: Text(
-                        '${book?.title}',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: TEXT_REGULAR,
-                          fontWeight: FontWeight.w500,
+                    InkWell(
+                      onTap: () {
+                        onTapBookName(book);
+                      },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.6,
+                        child: Text(
+                          '${book?.title}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: TEXT_REGULAR,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),

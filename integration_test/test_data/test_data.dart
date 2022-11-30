@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
+const Key KEY_HOME_PAGE_TAB_BAR_SECTION = Key("HOME_PAGE_TAB_BAR_SECTION");
 const Key KEY_HOME_PAGE_BOTTOM_NAVIGATION_BAR =
     Key('KEY_HOME_PAGE_BOTTOM_NAVIGATION_BAR');
+const Key KEY_HOME_PAGE_LIST_VIEW = Key('HOME_PAGE_LIST_VIEW');
+const Key KEY_HOME_PAGE_BOOK_SWIPPER_SECTION =
+    Key("HOME_PAGE_BOOK_SWIPPER_SECTION");
+
+const Key KEY_BOOK_HORIZONTAL_SCROLL_VIEW = Key("BOOK_HORIZONTAL_SCROLL_VIEW");
 const Key KEY_NO_BOOK_VIEW_IN_SWIPPER = Key('KEY_NO_BOOK_VIEW_IN_SWIPPER');
 const Key KEY_BOOK_DETAIL_POP_ICON = Key('KEY_MOVIE_DETAIL_POP_ICON');
 const Key KEY_HOME_PAGE_SEARCH_FIELD = Key('KEY_HOME_PAGE_SEARCH_FIELD');
@@ -11,14 +17,20 @@ const Key KEY_SWIPPER_BOOK_NAME_ONE = Key('$TEST_DATA_BOOK_NAME_ONE');
 const Key KEY_SWIPPER_BOOK_NAME_TWO = Key('$TEST_DATA_BOOK_NAME_TWO');
 const Key KEY_SWIPPER_BOOK_NAME_THREE = Key('$TEST_DATA_BOOK_NAME_THREE');
 
-const String TEST_DATA_LIST_NAME_ONE = "Combined Print and E-Book Fiction";
-const String TEST_DATA_BOOK_NAME_ONE = "THE LOST METAL";
-const String TEST_DATA_BOOK_AUTHOR_ONE = "Brandon Sanderson";
+const String TEST_DATA_LIST_NAME_ONE = "Paperback Nonfiction";
+const String TEST_DATA_BOOK_NAME_ONE = "ALL ABOUT LOVE";
+const String TEST_DATA_BOOK_AUTHOR_ONE = "bell hooks";
 
-const String TEST_DATA_LIST_NAME_TWO = "Combined Print and E-Book Nonfiction";
-const String TEST_DATA_BOOK_NAME_TWO = "SO HELP ME GOD";
-const String TEST_DATA_BOOK_AUTHOR_TWO = "Mike Pence";
+const String TEST_DATA_LIST_NAME_TWO = "Picture Books";
+const String TEST_DATA_BOOK_NAME_TWO = "THE SOUR GRAPE";
+const String TEST_DATA_BOOK_AUTHOR_TWO = "Jory John and Pete Oswald";
 
-const String TEST_DATA_LIST_NAME_THREE = "Business Books";
-const String TEST_DATA_BOOK_NAME_THREE = "ADRIFT";
-const String TEST_DATA_BOOK_AUTHOR_THREE = "Scott Galloway";
+const String TEST_DATA_LIST_NAME_THREE = "Middle Grade Paperback Monthly";
+const String TEST_DATA_BOOK_NAME_THREE = "WISH";
+const String TEST_DATA_BOOK_AUTHOR_THREE = "Barbara O'Connor";
+
+const Key KEY_SEARCH_PAGE_POP_ICON = Key('SEARCH_PAGE_POP_ICON');
+const Key KEY_SWIPPER_SEARCH_BOOK_NAME = Key('$TEST_DATA_SEARCH_BOOK_NAME');
+const String TEST_DATA_SEARCH_NAME = 'flutter';
+const String TEST_DATA_SEARCH_BOOK_NAME = 'Beginning Flutter';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR = 'Marco L. Napoli';

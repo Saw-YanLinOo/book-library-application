@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return ListView(
+      key: const Key("HOME_PAGE_LIST_VIEW"),
       children: [
         const SizedBox(
           height: MARGIN_XXXXL_LARGE,
@@ -47,6 +48,7 @@ class _HomePageState extends State<HomePage>
             selector: (context, bloc) => bloc.previewbooklist,
             builder: (context, bookList, child) {
               return BookSwipperSetion(
+                key: Key("HOME_PAGE_BOOK_SWIPPER_SECTION"),
                 bookList: bookList,
               );
             }),
@@ -59,6 +61,7 @@ class _HomePageState extends State<HomePage>
               _tabController.index = value;
 
               return TabBarViewWidget(
+                key: const Key("HOME_PAGE_TAB_BAR_SECTION"),
                 tabController: _tabController,
                 onTap: (index) {
                   context.read<HomePageBloc>().onChangedBookType(index);
@@ -455,6 +458,7 @@ class TitleAndBookListView extends StatelessWidget {
           SizedBox(
             height: 200,
             child: ListView.builder(
+              key: const Key("BOOK_HORIZONTAL_SCROLL_VIEW"),
               reverse: true,
               itemCount: mBookList?.length,
               scrollDirection: Axis.horizontal,
