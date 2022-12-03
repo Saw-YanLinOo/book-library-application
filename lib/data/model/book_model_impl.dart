@@ -52,7 +52,6 @@ class BookModelImpl implements BookModel {
 
   @override
   void saveBook(BookVO book) {
-    debugPrint("Save Book");
     mBookDao.saveSingleBook(book);
   }
 

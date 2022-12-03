@@ -50,8 +50,8 @@ class _LibraryPageState extends State<LibraryPage>
                 bloc.onChanged(index);
               },
               tabItems: const [
-                Tab(text: YOUR_BOOK_TEXT),
-                Tab(text: YOUR_SHELVES_TEXT),
+                Tab(key: Key('Your books tab'), text: YOUR_BOOK_TEXT),
+                Tab(key: Key('Your shelves tab'), text: YOUR_SHELVES_TEXT),
               ],
             );
           },

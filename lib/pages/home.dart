@@ -69,11 +69,15 @@ class _HomeState extends State<Home> {
               },
               items: const [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home_filled),
+                  icon: Icon(
+                      key: Key('KEY_HOME_PAGE_HOME_BOTTOM_NAVIGATION_BAR'),
+                      Icons.home_filled),
                   label: HOME_TEXT,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.library_books_outlined),
+                  icon: Icon(
+                      key: Key('KEY_HOME_PAGE_LIBRARY_BOTTOM_NAVIGATION_BAR'),
+                      Icons.library_books_outlined),
                   label: LIBRARY_TEXT,
                 )
               ],

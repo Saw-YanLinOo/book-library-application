@@ -128,6 +128,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                 Visibility(
                   visible: selectedList?.isNotEmpty ?? false,
                   child: Container(
+                    key: Key('RemoveCategoryIcon'),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 0.2),
                       borderRadius: BorderRadius.circular(
@@ -217,6 +218,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
               Row(
                 children: [
                   GestureDetector(
+                    key: Key('SORTBY_ICON'),
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
@@ -245,6 +247,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                                     var sortBy = SortBy.values[index];
 
                                     return RadioListTile(
+                                      key: Key(sortBy.name),
                                       value: index,
                                       groupValue: sortByGroupValue,
                                       onChanged: (value) {
@@ -275,6 +278,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                 ],
               ),
               GestureDetector(
+                key: Key('VIEWAS_ICON'),
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
@@ -305,6 +309,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                                 var viewAs = ViewAs.values[index];
 
                                 return RadioListTile(
+                                  key: Key(viewAs.name),
                                   value: index,
                                   groupValue: groupValue,
                                   onChanged: (value) {
@@ -455,7 +460,7 @@ class ListViewSection extends StatelessWidget {
                           height: MARGIN_SMALL,
                         ),
                         Text(
-                          '${book?.author}',
+                          '\$ ${book?.price}',
                           style: TextStyle(
                             fontSize: TEXT_SMALL,
                           ),

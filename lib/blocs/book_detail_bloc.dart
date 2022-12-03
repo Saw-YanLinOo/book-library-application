@@ -7,7 +7,7 @@ class BookDetailBloc extends ChangeNotifier {
   final BookModel _bookModel = BookModelImpl();
 
   BookDetailBloc(BookVO book) {
-    debugPrint("save book");
+    debugPrint("save ${book.title} book");
     _bookModel.saveBook(book);
   }
 }

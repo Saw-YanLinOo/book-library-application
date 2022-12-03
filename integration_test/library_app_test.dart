@@ -40,6 +40,10 @@ void main() async {
     expect(find.byType(Home), findsOneWidget);
     expect(find.byKey(KEY_HOME_PAGE_SEARCH_FIELD), findsOneWidget);
     expect(find.byKey(KEY_HOME_PAGE_BOTTOM_NAVIGATION_BAR), findsOneWidget);
+    expect(
+        find.byKey(KEY_HOME_PAGE_HOME_BOTTOM_NAVIGATION_BAR), findsOneWidget);
+    expect(find.byKey(KEY_HOME_PAGE_LIBRARY_BOTTOM_NAVIGATION_BAR),
+        findsOneWidget);
 
     // Home Page
     expect(find.byType(HomePage), findsOneWidget);
@@ -47,6 +51,66 @@ void main() async {
     expect(find.byKey(KEY_HOME_PAGE_TAB_BAR_SECTION), findsOneWidget);
 
     await tapBookToDetailPageAndCheckInSwipper(tester);
+
+    await tester.tap(find.byKey(KEY_HOME_PAGE_LIBRARY_BOTTOM_NAVIGATION_BAR));
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+
+    expect(find.text(TEST_DATA_LIST_NAME_ONE), findsOneWidget);
+    expect(find.text(TEST_DATA_LIST_NAME_TWO), findsOneWidget);
+    expect(find.text(TEST_DATA_LIST_NAME_THREE), findsOneWidget);
+
+    checkBookNameAndAuthor(
+        bookName: TEST_DATA_BOOK_NAME_ONE,
+        bookAuthor: TEST_DATA_BOOK_AUTHOR_ONE);
+    checkBookNameAndAuthor(
+        bookName: TEST_DATA_BOOK_NAME_TWO,
+        bookAuthor: TEST_DATA_BOOK_AUTHOR_TWO);
+    checkBookNameAndAuthor(
+        bookName: TEST_DATA_BOOK_NAME_THREE,
+        bookAuthor: TEST_DATA_BOOK_AUTHOR_THREE);
+
+    await tester.tap(find.text(TEST_DATA_LIST_NAME_ONE));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    checkBookNameAndAuthor(
+        bookName: TEST_DATA_BOOK_NAME_ONE,
+        bookAuthor: TEST_DATA_BOOK_AUTHOR_ONE);
+
+    await tester.tap(find.byKey(KeyRemoveCategory));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeySortBy));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeySortByRecently));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeySortByTitle));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeySortByAuthor));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeyYourBooksTab), warnIfMissed: false);
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+
+    await tester.tap(find.byKey(KeyViewAs));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeyViewAsList));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeyViewAsLargeGrid));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeyViewAsSmallGrid));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+
+    await tester.tap(find.byKey(KeyYourBooksTab), warnIfMissed: false);
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+
+    await tester.tap(find.byKey(KEY_HOME_PAGE_HOME_BOTTOM_NAVIGATION_BAR));
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+
     await searchBookAndCheckInSwipper(tester);
   });
 }
@@ -60,19 +124,15 @@ Future<void> searchBookAndCheckInSwipper(WidgetTester tester) async {
   await tester.testTextInput.receiveAction(TextInputAction.done);
   await tester.pumpAndSettle(const Duration(seconds: 5));
 
-  expect(find.text(TEST_DATA_SEARCH_BOOK_NAME), findsOneWidget);
-  await tester.tap(find.text(TEST_DATA_SEARCH_BOOK_NAME));
-  await tester.pumpAndSettle(const Duration(seconds: 5));
-
-  expect(find.text(TEST_DATA_SEARCH_BOOK_NAME), findsOneWidget);
-  expect(find.text(TEST_DATA_SEARCH_BOOK_AUTHOR), findsOneWidget);
-  await tester.tap(find.byKey(KEY_BOOK_DETAIL_POP_ICON));
-
-  await tester.pumpAndSettle(const Duration(seconds: 5));
+  expect(find.text(TEST_DATA_SEARCH_BOOK_NAME_ONE), findsOneWidget);
+  expect(find.text(TEST_DATA_SEARCH_BOOK_AUTHOR_ONE), findsOneWidget);
+  expect(find.text(TEST_DATA_SEARCH_BOOK_NAME_TWO), findsOneWidget);
+  expect(find.text(TEST_DATA_SEARCH_BOOK_AUTHOR_TWO), findsOneWidget);
+  expect(find.text(TEST_DATA_SEARCH_BOOK_NAME_THREE), findsOneWidget);
+  expect(find.text(TEST_DATA_SEARCH_BOOK_AUTHOR_THREE), findsOneWidget);
 
   await tester.tap(find.byKey(KEY_SEARCH_PAGE_POP_ICON));
   await tester.pumpAndSettle(const Duration(seconds: 5));
-  expect(find.byKey(KEY_SWIPPER_SEARCH_BOOK_NAME), findsOneWidget);
 }
 
 Future<void> tapBookToDetailPageAndCheckInSwipper(WidgetTester tester) async {
@@ -80,42 +140,46 @@ Future<void> tapBookToDetailPageAndCheckInSwipper(WidgetTester tester) async {
   /// Swipper BookKey One(key), Scroll Offset For BookOne(offset)
 
   // Book One
-  await checkBook(
+  await checkListNameBookNameNavitateToDetailAndCheckInSwipper(
     tester: tester,
     listName: TEST_DATA_LIST_NAME_ONE,
     bookName: TEST_DATA_BOOK_NAME_ONE,
     bookAuthor: TEST_DATA_BOOK_AUTHOR_ONE,
+    bookDescription: TEST_DATA_BOOK_DESCRIPTION_ONE,
     swipperKey: KEY_SWIPPER_BOOK_NAME_ONE,
     detaX: 0.0,
     detaY: 1900,
   );
   // Book Two
-  await checkBook(
+  await checkListNameBookNameNavitateToDetailAndCheckInSwipper(
     tester: tester,
     listName: TEST_DATA_LIST_NAME_TWO,
     bookName: TEST_DATA_BOOK_NAME_TWO,
     bookAuthor: TEST_DATA_BOOK_AUTHOR_TWO,
+    bookDescription: TEST_DATA_BOOK_DESCRIPTION_TWO,
     swipperKey: KEY_SWIPPER_BOOK_NAME_TWO,
     detaX: 0.0,
     detaY: 2000,
   );
   // Book Three
-  await checkBook(
+  await checkListNameBookNameNavitateToDetailAndCheckInSwipper(
     tester: tester,
     listName: TEST_DATA_LIST_NAME_THREE,
     bookName: TEST_DATA_BOOK_NAME_THREE,
     bookAuthor: TEST_DATA_BOOK_AUTHOR_THREE,
+    bookDescription: TEST_DATA_BOOK_DESCRIPTION_THREE,
     swipperKey: KEY_SWIPPER_BOOK_NAME_THREE,
     detaX: 0.0,
     detaY: 4000,
   );
 }
 
-Future<void> checkBook({
+Future<void> checkListNameBookNameNavitateToDetailAndCheckInSwipper({
   required WidgetTester tester,
   required String listName,
   required String bookName,
   required String bookAuthor,
+  required String bookDescription,
   required Key swipperKey,
   required double detaX,
   required double detaY,
@@ -136,6 +200,7 @@ Future<void> checkBook({
 
   expect(find.text(bookName), findsOneWidget);
   expect(find.text(bookAuthor), findsOneWidget);
+  expect(find.text(bookDescription), findsOneWidget);
   await tester.tap(find.byKey(KEY_BOOK_DETAIL_POP_ICON));
 
   await tester.pumpAndSettle(const Duration(seconds: 5));
@@ -153,4 +218,12 @@ Future<void> checkBook({
     const Offset(0.0, 100.0),
   );
   await tester.pumpAndSettle(const Duration(seconds: 5));
+}
+
+checkBookNameAndAuthor({
+  required String bookName,
+  required String bookAuthor,
+}) {
+  expect(find.text(bookName), findsOneWidget);
+  expect(find.text(bookAuthor), findsOneWidget);
 }
