@@ -1,7 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:library_app/blocs/shelf_bloc.dart';
+import 'package:library_app/blocs/create_shelf_bloc.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
 import 'package:library_app/resourses/dimens.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +15,18 @@ class CreateShelfPage extends StatefulWidget {
 
 class _CreateShelfPageState extends State<CreateShelfPage> {
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    var bloc = Provider.of<CreateShelfBloc>(context, listen: false);
+    bloc.isDisposed = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ShelfBloc>(
-        create: (context) => ShelfBloc(),
+    return ChangeNotifierProvider<CreateShelfBloc>.value(
+        value: CreateShelfBloc(),
         builder: (context, child) {
           return Scaffold(
             appBar: AppBar(
@@ -27,6 +34,7 @@ class _CreateShelfPageState extends State<CreateShelfPage> {
               backgroundColor: Colors.transparent,
               centerTitle: true,
               leading: InkWell(
+                key: const Key('BackIcon'),
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -61,14 +69,12 @@ class _CreateShelfPageState extends State<CreateShelfPage> {
                     onSubmitted: (value) {
                       var shelf = ShelfVO(shelfName: value);
 
-                      Provider.of<ShelfBloc>(context, listen: false)
+                      Provider.of<CreateShelfBloc>(context, listen: false)
                           .addShelf(shelf);
 
-                      Timer.periodic(const Duration(seconds: 1), (timer) {
-                        if (mounted) {
-                          Navigator.pop(context);
-                        }
-                      });
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 ),

@@ -63,3 +63,27 @@ const KeyViewAs = Key('VIEWAS_ICON');
 const KeyViewAsList = Key('List');
 const KeyViewAsLargeGrid = Key('LargeGrid');
 const KeyViewAsSmallGrid = Key('SmallGrid');
+
+const KeyListVeiw = Key('ListView');
+const KeyLargeGridVeiw = Key('LargeGridView');
+const KeySmallGridVeiw = Key('SmallGridView');
+
+// Shelf Page
+const KeyCreateNewShelf = Key('CreateNewShelf');
+const KeyNewShelf = Key(CreateShelfName);
+const KeyBookNameOne = Key(TEST_DATA_BOOK_NAME_ONE);
+const KeyBookNameTwo = Key(TEST_DATA_BOOK_NAME_TWO);
+const KeyBookNameThree = Key(TEST_DATA_BOOK_NAME_THREE);
+
+const SeeMoreBookOne = Key('$TEST_DATA_BOOK_NAME_ONE SEE MORE');
+const SeeMoreBookTwo = Key('$TEST_DATA_BOOK_NAME_TWO SEE MORE');
+const SeeMoreBookThree = Key('$TEST_DATA_BOOK_NAME_THREE SEE MORE');
+
+const KeyViewMoreIcon = Key('ViewMoreIcon');
+
+const String CreateShelfName = 'New Shelf';
+const String RenameShelfText = 'Testing';
+const String ZeroBookText = '0 book';
+const String OneBookText = '1 book';
+const String TwoBookText = '2 book';
+const String ThreeBookText = '3 book';

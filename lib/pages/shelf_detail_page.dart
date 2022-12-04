@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:library_app/blocs/shelf_bloc.dart';
+import 'package:library_app/blocs/create_shelf_bloc.dart';
 import 'package:library_app/blocs/shelf_detail_bloc.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/data/vos/shelf_vo.dart';
@@ -35,31 +35,27 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
   ) async {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
-        return ChangeNotifierProvider.value(
-          value: SehlfDetailBloc(widget.shelf ?? ShelfVO()),
-          builder: (context, child) {
-            return UpdateShelfView(
-              shelfName: widget.shelf?.shelfName,
-              onEdit: () {
-                onTapEdit();
-              },
-              onDelected: () {
-                onDelected();
-                // context
-                //     .read<SehlfDetailBloc>()
-                //     .onDeleteShelf(widget.shelf?.index ?? '');
-                // Timer(const Duration(seconds: 1), () {
-                //   Navigator.of(context)
-                //     ..pop()
-                //     ..pop();
-                // });
-              },
-            );
+      builder: (ctx) {
+        return UpdateShelfView(
+          shelfName: widget.shelf?.shelfName,
+          onEdit: () {
+            onTapEdit();
+          },
+          onDelected: () {
+            onDelected();
           },
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    var bloc = Provider.of<SehlfDetailBloc>(context, listen: false);
+    bloc.isDispose = true;
   }
 
   @override
@@ -87,21 +83,21 @@ class _ShelfDetailPageState extends State<ShelfDetailPage> {
           ),
           actions: [
             InkWell(
+              key: const Key('ViewMoreIcon'),
               onTap: () async {
+                var bloc = Provider.of<SehlfDetailBloc>(context, listen: false);
                 showNavigation(context, () {
                   debugPrint('edit shelf name');
-                  context.read<SehlfDetailBloc>().onedit(true);
+                  bloc.onedit(true);
+
                   Navigator.pop(context, true);
                 }, () {
                   debugPrint('on delete shelf');
-                  context
-                      .read<SehlfDetailBloc>()
-                      .onDeleteShelf(widget.shelf?.index ?? '');
-                  Timer(const Duration(seconds: 1), () {
-                    Navigator.of(context)
-                      ..pop()
-                      ..pop();
-                  });
+                  bloc.onDeleteShelf(widget.shelf?.index ?? '');
+
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
                 });
               },
               child: const Padding(

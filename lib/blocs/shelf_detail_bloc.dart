@@ -8,6 +8,7 @@ class SehlfDetailBloc extends ChangeNotifier {
   ShelfVO? shelf;
   List<BookVO>? booklist;
   bool edit = false;
+  var isDispose = false;
 
   BookModel bookModel = BookModelImpl();
 
@@ -15,7 +16,7 @@ class SehlfDetailBloc extends ChangeNotifier {
     bookModel.getShelfFromDatabase(shelfVO.index ?? '').listen((event) {
       shelf = event;
       booklist = event?.bookList;
-      notifyListeners();
+      notifysafely();
     });
   }
 
@@ -32,5 +33,11 @@ class SehlfDetailBloc extends ChangeNotifier {
 
   onDeleteShelf(String index) {
     bookModel.deleteShelf(index);
+  }
+
+  void notifysafely() {
+    if (isDispose == false) {
+      notifyListeners();
+    }
   }
 }

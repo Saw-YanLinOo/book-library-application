@@ -10,12 +10,14 @@ class BookSettingSheetView extends StatelessWidget {
     required this.onTapAboutThisBook,
     required this.onTapDelete,
     required this.onTapAddToShelf,
+    required this.onTapClose,
   }) : super(key: key);
 
   final BookVO? book;
   final Function onTapAboutThisBook;
   final Function onTapDelete;
   final Function onTapAddToShelf;
+  final Function onTapClose;
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +125,19 @@ class BookSettingSheetView extends StatelessWidget {
           leading: Icon(Icons.book),
           title: Text(
             'About this book',
+            style: TextStyle(
+              fontSize: TEXT_SMALL,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            //onDelected();
+            onTapClose();
+          },
+          leading: Icon(Icons.clear),
+          title: Text(
+            'Close',
             style: TextStyle(
               fontSize: TEXT_SMALL,
             ),

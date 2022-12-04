@@ -9,8 +9,58 @@ import 'package:provider/provider.dart';
 
 import '../widgets/custom_show_book_view.dart';
 
-class YourBookPage extends StatelessWidget {
+class YourBookPage extends StatefulWidget {
   const YourBookPage({Key? key}) : super(key: key);
+
+  @override
+  State<YourBookPage> createState() => _YourBookPageState();
+}
+
+class _YourBookPageState extends State<YourBookPage> {
+  showButtonSheet(BuildContext context, BookVO? book) {
+    showModalBottomSheet(
+        useRootNavigator: true,
+        isScrollControlled: true,
+        context: context,
+        builder: (_) {
+          return ChangeNotifierProvider.value(
+            value: LibraryPageBloc(),
+            child: BookSettingSheetView(
+              book: book,
+              onTapClose: () {
+                Navigator.of(context).pop();
+              },
+              onTapAboutThisBook: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookDetailPage(
+                      listName: book?.listName,
+                      mBook: book,
+                    ),
+                  ),
+                );
+              },
+              onTapAddToShelf: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddToShelfPage(
+                      book: book,
+                    ),
+                  ),
+                );
+              },
+              onTapDelete: () {
+                var bloc = Provider.of<LibraryPageBloc>(context, listen: false);
+
+                bloc.deleteBook(book?.title ?? '');
+                Navigator.pop(context);
+              },
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,47 +80,53 @@ class YourBookPage extends StatelessWidget {
             }
 
             return CustomShowBookView(
+              key: UniqueKey(),
               booklist: books,
               filterlist: lists,
               onTapBook: (book) {},
               onTapSeeMore: (book) {
                 showModalBottomSheet(
+                    useRootNavigator: true,
+                    isScrollControlled: true,
                     context: context,
                     builder: (context) {
                       return ChangeNotifierProvider.value(
-                          value: HomePageBloc(),
-                          builder: (context, child) {
-                            return BookSettingSheetView(
-                              book: book,
-                              onTapAboutThisBook: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BookDetailPage(
-                                      listName: book?.listName,
-                                      mBook: book,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onTapAddToShelf: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AddToShelfPage(
-                                      book: book,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onTapDelete: () {
-                                context
-                                    .read<HomePageBloc>()
-                                    .deleteBook(book?.title ?? '');
-                                Navigator.pop(context);
-                              },
+                        value: LibraryPageBloc(),
+                        child: BookSettingSheetView(
+                          book: book,
+                          onTapClose: () {
+                            Navigator.of(context).pop();
+                          },
+                          onTapAboutThisBook: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookDetailPage(
+                                  listName: book?.listName,
+                                  mBook: book,
+                                ),
+                              ),
                             );
-                          });
+                          },
+                          onTapAddToShelf: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddToShelfPage(
+                                  book: book,
+                                ),
+                              ),
+                            );
+                          },
+                          onTapDelete: () {
+                            var bloc = Provider.of<LibraryPageBloc>(context,
+                                listen: false);
+
+                            bloc.deleteBook(book?.title ?? '');
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
                     });
               },
             );

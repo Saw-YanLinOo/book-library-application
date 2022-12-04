@@ -77,13 +77,14 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
     setState(() {});
   }
 
-  _onTapViewas(ViewAs mViewAs, int index) {
+  _onTapViewas(BuildContext context, ViewAs mViewAs, int index) {
     viewAs = mViewAs;
     groupValue = index;
     setState(() {});
+    Navigator.pop(context);
   }
 
-  _onChangedSortBy(SortBy sortBy, int index) {
+  _onChangedSortBy(BuildContext context, SortBy sortBy, int index) {
     List<BookVO>? newBookList = List.from(widget.booklist ?? []);
 
     sortByGroupValue = index;
@@ -108,6 +109,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
         }
     }
     setState(() {});
+    Navigator.pop(context);
   }
 
   @override
@@ -251,7 +253,8 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                                       value: index,
                                       groupValue: sortByGroupValue,
                                       onChanged: (value) {
-                                        _onChangedSortBy(sortBy, index);
+                                        _onChangedSortBy(
+                                            context, sortBy, index);
                                         setStated(() {});
                                       },
                                       title: Text('${sortBy.name}'),
@@ -313,9 +316,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                                   value: index,
                                   groupValue: groupValue,
                                   onChanged: (value) {
-                                    _onTapViewas(viewAs, index);
-                                    // groupValue = index;
-                                    // debugPrint('group value ::: $groupValue');
+                                    _onTapViewas(context, viewAs, index);
                                     setStated(() {});
                                   },
                                   title: Text('${viewAs.name}'),
@@ -350,6 +351,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
             switch (viewAs) {
               case ViewAs.List:
                 return ListViewSection(
+                  key: const Key('ListView'),
                   bookList: bookList,
                   onTapBook: (book) {
                     widget.onTapBook(book);
@@ -360,6 +362,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                 );
               case ViewAs.LargeGrid:
                 return LargeGridViewSection(
+                  key: const Key('LargeGridView'),
                   bookList: bookList,
                   onTapBook: (book) {
                     widget.onTapBook(book);
@@ -370,6 +373,7 @@ class _CustomShowBookViewState extends State<CustomShowBookView>
                 );
               case ViewAs.SmallGrid:
                 return SmallGridViewSection(
+                  key: const Key('SmallGridView'),
                   bookList: bookList,
                   onTapBook: (book) {
                     widget.onTapBook(book);
@@ -478,6 +482,7 @@ class ListViewSection extends StatelessWidget {
                       width: MARGIN_XL_LARGE,
                     ),
                     InkWell(
+                      key: Key('${book?.title} SEE MORE'),
                       onTap: () {
                         onTapSeeMore(book);
                       },
