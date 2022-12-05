@@ -121,7 +121,6 @@ class _HomePageState extends State<HomePage>
                             },
                             onTapSeeMore: (book) {
                               showModalBottomSheet(
-                                  isScrollControlled: true,
                                   context: context,
                                   builder: (context) {
                                     return ChangeNotifierProvider.value(
@@ -130,9 +129,6 @@ class _HomePageState extends State<HomePage>
                                           return BookSettingSheetView(
                                             book: book,
                                             onTapAboutThisBook: () {},
-                                            onTapClose: () {
-                                              Navigator.pop(context);
-                                            },
                                             onTapAddToShelf: () {
                                               Navigator.push(
                                                 context,

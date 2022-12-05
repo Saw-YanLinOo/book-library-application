@@ -53,7 +53,6 @@ class YourShelfPage extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: NewSheetButton(
-            key: const Key('CreateNewShelf'),
             onTap: () {
               Navigator.push(
                 context,
@@ -134,21 +133,17 @@ class ShelfViewItem extends StatelessWidget {
             SizedBox(
               width: 80,
               height: 80,
-              child: shelf.bookList?.last.bookImage == null
-                  ? Container(
-                      color: Colors.grey,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: '${shelf.bookList?.last.bookImage}',
-                      fit: BoxFit.cover,
-                      errorWidget: (context, _, __) {
-                        return Container(
-                          width: 80,
-                          height: 80,
-                          color: Colors.grey,
-                        );
-                      },
-                    ),
+              child: CachedNetworkImage(
+                imageUrl: '${shelf.bookList?.last.bookImage}',
+                fit: BoxFit.cover,
+                errorWidget: (context, _, __) {
+                  return Container(
+                    width: 80,
+                    height: 80,
+                    color: Colors.grey,
+                  );
+                },
+              ),
             ),
             SizedBox(
               width: MARGIN_MEDIUM,

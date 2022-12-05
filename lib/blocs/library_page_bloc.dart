@@ -14,9 +14,8 @@ class LibraryPageBloc extends ChangeNotifier {
   List<BookVO>? booklist;
   List<String>? filterlist = [];
   List<ShelfVO>? shelflist;
-  bool isDispose = false;
 
-  final BookModel _bookModel = BookModelImpl();
+  BookModel _bookModel = BookModelImpl();
 
   LibraryPageBloc() {
     _bookModel.getBookFromDatabase().listen((books) {
@@ -28,22 +27,20 @@ class LibraryPageBloc extends ChangeNotifier {
     _bookModel.getAllShelfFromDatabase().listen((event) {
       debugPrint("get your shelf page");
       shelflist = event;
-      notifysafely();
+      notifyListeners();
     });
   }
 
-  deleteBook(String title) {
-    _bookModel.deleteBook(title);
+  getShref() {
+    _bookModel.getAllShelfFromDatabase().listen((event) {
+      debugPrint("get your shelf page");
+      shelflist = event;
+      notifyListeners();
+    });
   }
 
   void onChanged(int index) {
     currentIndex = index;
     notifyListeners();
-  }
-
-  void notifysafely() {
-    if (isDispose == false) {
-      notifyListeners();
-    }
   }
 }

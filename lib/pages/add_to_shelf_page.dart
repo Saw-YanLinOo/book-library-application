@@ -20,18 +20,9 @@ class AddToShelfPage extends StatefulWidget {
 
 class _AddToShelfPageState extends State<AddToShelfPage> {
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-    var bloc = Provider.of<AddToShelfBloc>(context, listen: false);
-    bloc.isDispose = true;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AddToShelfBloc>.value(
-      value: AddToShelfBloc(),
+    return ChangeNotifierProvider<AddToShelfBloc>(
+      create: (context) => AddToShelfBloc(),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -47,9 +38,7 @@ class _AddToShelfPageState extends State<AddToShelfPage> {
           actions: [
             InkWell(
               onTap: () {
-                if (mounted) {
-                  Navigator.of(context).pop();
-                }
+                Navigator.of(context).pop();
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -78,17 +67,17 @@ class _AddToShelfPageState extends State<AddToShelfPage> {
                   shelf: shelf,
                   isCheck: shelf?.bookTiteList?.contains(widget.book?.title),
                   onShelfCheck: (value) {
-                    Provider.of<AddToShelfBloc>(context, listen: false)
-                        .bookToShelf(
-                      shelf ?? ShelfVO(),
-                      widget.book ?? BookVO(),
-                      value ?? false,
-                    );
+                    context.read<AddToShelfBloc>().bookToShelf(
+                          shelf ?? ShelfVO(),
+                          widget.book ?? BookVO(),
+                          value ?? false,
+                        );
+                    //setState(() {});
                   },
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
-                return const Divider();
+                return Divider();
               },
             );
           },
@@ -117,7 +106,6 @@ class ShelfView extends StatelessWidget {
           width: 80,
           height: 80,
           child: CachedNetworkImage(
-            key: Key('${shelf?.bookList?.last.title}'),
             imageUrl: '${shelf?.bookList?.last.bookImage}',
             fit: BoxFit.fill,
             errorWidget: (context, _, __) {

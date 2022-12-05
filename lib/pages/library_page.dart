@@ -36,15 +36,6 @@ class _LibraryPageState extends State<LibraryPage>
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-    var bloc = Provider.of<LibraryPageBloc>(context, listen: false);
-    bloc.isDispose = true;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -73,8 +64,7 @@ class _LibraryPageState extends State<LibraryPage>
           builder: (context, value, child) {
             return Expanded(
               child: Container(
-                child:
-                    value == 0 ? const YourBookPage() : const YourShelfPage(),
+                child: value == 0 ? YourBookPage() : YourShelfPage(),
               ),
             );
           },

@@ -8,13 +8,11 @@ class AddToShelfBloc extends ChangeNotifier {
   List<ShelfVO>? shelfList;
   BookModel _bookModel = BookModelImpl();
 
-  bool isDispose = false;
-
   AddToShelfBloc() {
     debugPrint("init add to shelf bloc");
     _bookModel.getAllShelfFromDatabase().listen((event) {
       shelfList = event;
-      notifysafely();
+      notifyListeners();
     });
   }
 
@@ -24,12 +22,6 @@ class AddToShelfBloc extends ChangeNotifier {
       _bookModel.addBookToShelf(shelf.index ?? '', bookVO);
     } else {
       _bookModel.removeBookToShelf(shelf.index ?? '', bookVO);
-    }
-  }
-
-  void notifysafely() {
-    if (isDispose == false) {
-      notifyListeners();
     }
   }
 }

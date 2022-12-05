@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:library_app/blocs/book_detail_bloc.dart';
+import 'package:library_app/blocs/home_bloc.dart';
 import 'package:library_app/blocs/home_page_bloc.dart';
 import 'package:library_app/data/vos/book_vo.dart';
 import 'package:library_app/resourses/dimens.dart';
