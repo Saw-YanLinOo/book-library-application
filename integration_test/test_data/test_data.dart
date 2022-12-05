@@ -48,6 +48,22 @@ const String TEST_DATA_SEARCH_BOOK_NAME_TWO = 'Flutter in Action';
 const String TEST_DATA_SEARCH_BOOK_AUTHOR_TWO = 'Eric Windmill';
 const String TEST_DATA_SEARCH_BOOK_NAME_THREE = 'Flutter For Dummies';
 const String TEST_DATA_SEARCH_BOOK_AUTHOR_THREE = 'Barry Burd';
+const String TEST_DATA_SEARCH_BOOK_NAME_FOUR = 'Flutter for Beginners';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR_FOUR = 'Alessandro Biessek';
+const String TEST_DATA_SEARCH_BOOK_NAME_FIVE =
+    'Beginning App Development with Flutter';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR_FIVE = 'Rap Payne';
+const String TEST_DATA_SEARCH_BOOK_NAME_SIX = 'Flutter Cookbook';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR_SIX =
+    'Simone Alessandria,Brian Kayfitz';
+const String TEST_DATA_SEARCH_BOOK_NAME_SEVEN = 'Programming Flutter';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR_SEVEN = 'Carmine Zaccagnino';
+const String TEST_DATA_SEARCH_BOOK_NAME_EIGHT = 'Practical Flutter';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR_EIGHT = 'Frank Zammetti';
+const String TEST_DATA_SEARCH_BOOK_NAME_NINE = 'Flutter Projects';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR_NINE = 'Simone Alessandria';
+const String TEST_DATA_SEARCH_BOOK_NAME_TEN = 'Flutter Recipes';
+const String TEST_DATA_SEARCH_BOOK_AUTHOR_TEN = 'Fu Cheng';
 
 // Library
 const KeyYourBooksTab = Key('Your books tab');
